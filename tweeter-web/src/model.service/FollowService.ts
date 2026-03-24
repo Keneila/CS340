@@ -21,4 +21,5 @@ export class FollowService {
         // TODO: Replace with the result of calling server
         return FakeData.instance.getPageOfUsers(lastFollower, pageSize, userAlias);
       };
+
     }
