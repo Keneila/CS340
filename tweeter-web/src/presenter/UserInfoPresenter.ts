@@ -126,7 +126,7 @@ export class UserInfoPresenter {
         selectedUser: User
       ): Promise<boolean> {
         // TODO: Replace with the result of calling server
-        return this.userService.getIsFollowerStatus(authToken, user, selectedUser);
+        return await this.userService.getIsFollowerStatus(authToken, user, selectedUser);
       };
     
       public async getFolloweeCount (
@@ -134,7 +134,7 @@ export class UserInfoPresenter {
         user: User
       ): Promise<number> {
         // TODO: Replace with the result of calling server
-        return this.userService.getFolloweeCount(authToken, user);
+        return await this.userService.getFolloweeCount(authToken, user);
       };
     
     public async getFollowerCount (
@@ -142,7 +142,7 @@ export class UserInfoPresenter {
         user: User
       ): Promise<number> {
         // TODO: Replace with the result of calling server
-        return this.userService.getFollowerCount(authToken, user);
+        return await this.userService.getFollowerCount(authToken, user);
       };
     
     public async unfollow(
@@ -151,7 +151,7 @@ export class UserInfoPresenter {
       ): Promise<[followerCount: number, followeeCount: number]> {
         // Pause so we can see the unfollow message. Remove when connected to the server
         
-        return this.userService.unfollow(authToken, userToUnfollow);
+        return await this.userService.unfollow(authToken, userToUnfollow);
       };
     
       public async follow (
@@ -160,7 +160,7 @@ export class UserInfoPresenter {
       ): Promise<[followerCount: number, followeeCount: number]> {
         // Pause so we can see the follow message. Remove when connected to the server
         
-        return this.userService.follow(authToken, userToFollow);
+        return await this.userService.follow(authToken, userToFollow);
       };
 
 

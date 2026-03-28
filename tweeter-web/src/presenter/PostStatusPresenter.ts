@@ -51,7 +51,7 @@ export class PostStatusPresenter {
           newStatus: Status
         ): Promise<void> {
           // Pause so we can see the logging out message. Remove when connected to the server
-          this.userService.postStatus(authToken, newStatus);
+          await this.userService.postStatus(authToken, newStatus);
       
           // TODO: Call the server to post the status
         };

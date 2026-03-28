@@ -103,7 +103,7 @@ export class RegisterPresenter {
       ): Promise<[User, AuthToken]> {
         // Not neded now, but will be needed when you make the request to the server in milestone 3
     
-        return this.userService.register(
+        return await this.userService.register(
           firstName,
           lastName,
           alias,

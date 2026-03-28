@@ -51,7 +51,7 @@ export class LoginPresenter {
         ): Promise<[User, AuthToken]> {
         // TODO: Replace with the result of calling the server
 
-          return this.userService.login(alias, password);
+          return await this.userService.login(alias, password);
       };
     
 

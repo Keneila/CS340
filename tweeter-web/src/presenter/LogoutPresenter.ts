@@ -1,4 +1,4 @@
-import { User, AuthToken } from "tweeter-shared";
+import { AuthToken } from "tweeter-shared";
 import { UserService } from "../model.service/UserService";
 
 export interface LogoutView {
@@ -34,7 +34,7 @@ export class LogoutPresenter {
 
   public async logout (authToken: AuthToken): Promise<void> {
     // Pause so we can see the logging out message. Delete when the call to the server is implemented.
-    this.userService.logout(authToken);
+    await this.userService.logout(authToken);
   };
 
 
