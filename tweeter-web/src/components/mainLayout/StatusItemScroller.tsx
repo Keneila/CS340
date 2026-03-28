@@ -5,32 +5,32 @@ import { useParams } from "react-router-dom";
 import StatusItem from "../statusItem/StatusItem";
 import { useMessageActions } from "../toaster/MessageHooks";
 import { useUserInfo, useUserInfoActions } from "../userInfo/UserInfoHooks";
-import { StatusPresenter, StatusView } from "../../presenter/StatusPresenter";
+import { StatusPresenter } from "../../presenter/StatusPresenter";
+import { PagedItemView } from "../../presenter/PagedItemPresenter";
 
 interface Props {
   key: string;
   featurePath: string;
-  presenterFactory: (listener: StatusView) => StatusPresenter;
+  presenterFactory: (listener: PagedItemView<Status>) => StatusPresenter;
 }
 
 const StatusItemScroller = (props: Props) => {
-
-  const {displayErrorMessage } = useMessageActions();
+  const { displayErrorMessage } = useMessageActions();
   const [items, setItems] = useState<Status[]>([]);
-  const { displayedUser, authToken } = useUserInfo()
+  const { displayedUser, authToken } = useUserInfo();
   const { setDisplayedUser } = useUserInfoActions();
   const { displayedUser: displayedUserAliasParam } = useParams();
 
-  const listener: StatusView = {
+  const listener: PagedItemView<Status> = {
     addItems: (newItems: Status[]) =>
-    setItems((previousItems) => [...previousItems, ...newItems]),
-    displayErrorMessage: displayErrorMessage
+      setItems((previousItems) => [...previousItems, ...newItems]),
+    displayErrorMessage: displayErrorMessage,
   };
-  
+
   const presenterRef = useRef<StatusPresenter | null>(null);
   if (!presenterRef.current) {
-      presenterRef.current = props.presenterFactory(listener);
-    }
+    presenterRef.current = props.presenterFactory(listener);
+  }
 
   // Update the displayed user context variable whenever the displayedUser url parameter changes. This allows browser forward and back buttons to work correctly.
   useEffect(() => {
@@ -39,11 +39,13 @@ const StatusItemScroller = (props: Props) => {
       displayedUserAliasParam &&
       displayedUserAliasParam != displayedUser!.alias
     ) {
-      presenterRef.current!.getUser(authToken!, displayedUserAliasParam!).then((toUser) => {
-        if (toUser) {
-          setDisplayedUser(toUser);
-        }
-      });
+      presenterRef
+        .current!.getUser(authToken!, displayedUserAliasParam!)
+        .then((toUser) => {
+          if (toUser) {
+            setDisplayedUser(toUser);
+          }
+        });
     }
   }, [displayedUserAliasParam]);
 
@@ -57,7 +59,7 @@ const StatusItemScroller = (props: Props) => {
     setItems(() => []);
     presenterRef.current!.reset();
   };
-  
+
   const loadMoreItems = async () => {
     presenterRef.current!.loadMoreItems(authToken!, displayedUser!.alias);
   };
@@ -82,5 +84,5 @@ const StatusItemScroller = (props: Props) => {
       </InfiniteScroll>
     </div>
   );
-}
+};
 export default StatusItemScroller;

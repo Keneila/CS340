@@ -5,27 +5,27 @@ import { useParams } from "react-router-dom";
 import UserItem from "../userItem/UserItem";
 import { useMessageActions } from "../toaster/MessageHooks";
 import { useUserInfo, useUserInfoActions } from "../userInfo/UserInfoHooks";
-import { UserItemPresenter, UserItemView } from "../../presenter/UserItemPresenter";
-
+import { UserItemPresenter } from "../../presenter/UserItemPresenter";
+import { PagedItemView } from "../../presenter/PagedItemPresenter";
 
 interface Props {
   key: string;
   featureUrl: string;
-  presenterFactory: (listener: UserItemView) => UserItemPresenter;
+  presenterFactory: (listener: PagedItemView<User>) => UserItemPresenter;
 }
 
 const UserItemScroller = (props: Props) => {
-  const {displayErrorMessage } = useMessageActions();
+  const { displayErrorMessage } = useMessageActions();
   const [items, setItems] = useState<User[]>([]);
 
   const { displayedUser, authToken } = useUserInfo();
   const { setDisplayedUser } = useUserInfoActions();
   const { displayedUser: displayedUserAliasParam } = useParams();
 
-  const listener: UserItemView = {
+  const listener: PagedItemView<User> = {
     addItems: (newItems: User[]) =>
-    setItems((previousItems) => [...previousItems, ...newItems]),
-    displayErrorMessage: displayErrorMessage
+      setItems((previousItems) => [...previousItems, ...newItems]),
+    displayErrorMessage: displayErrorMessage,
   };
 
   const presenterRef = useRef<UserItemPresenter | null>(null);
@@ -40,11 +40,13 @@ const UserItemScroller = (props: Props) => {
       displayedUserAliasParam &&
       displayedUserAliasParam != displayedUser!.alias
     ) {
-      presenterRef.current!.getUser(authToken!, displayedUserAliasParam!).then((toUser: User | null) => {
-        if (toUser) {
-          setDisplayedUser(toUser);
-        }
-      });
+      presenterRef
+        .current!.getUser(authToken!, displayedUserAliasParam!)
+        .then((toUser: User | null) => {
+          if (toUser) {
+            setDisplayedUser(toUser);
+          }
+        });
     }
   }, [displayedUserAliasParam]);
 
@@ -83,6 +85,6 @@ const UserItemScroller = (props: Props) => {
       </InfiniteScroll>
     </div>
   );
-}
+};
 
 export default UserItemScroller;
