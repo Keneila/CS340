@@ -6,7 +6,10 @@ import AuthenticationFormLayout from "../AuthenticationFormLayout";
 import AuthenticationFields from "../AuthenticationFields";
 import { useMessageActions } from "../../toaster/MessageHooks";
 import { useUserInfoActions } from "../../userInfo/UserInfoHooks";
-import { RegisterPresenter, RegisterView } from "../../../presenter/RegisterPresenter";
+import {
+  RegisterPresenter,
+  RegisterView,
+} from "../../../presenter/RegisterPresenter";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -19,27 +22,45 @@ const Register = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const {displayErrorMessage } = useMessageActions();
+  const { displayErrorMessage } = useMessageActions();
 
   const listener: RegisterView = {
-        setImageUrl: setImageUrl,
-        setImageBytes: setImageBytes,
-        setImageFileExtension: setImageFileExtension,
-        navigate: useNavigate(),
-        displayErrorMessage: displayErrorMessage,
-        setIsLoading: setIsLoading,
-        updateUserInfo: useUserInfoActions().updateUserInfo
-      };
-  
-    const presenterRef = useRef<RegisterPresenter | null>(null);
-    if (!presenterRef.current) {
-        presenterRef.current = new RegisterPresenter(listener);
-    }
+    setImageUrl: setImageUrl,
+    setImageBytes: setImageBytes,
+    setImageFileExtension: setImageFileExtension,
+    navigate: useNavigate(),
+    displayErrorMessage: displayErrorMessage,
+    setIsLoading: setIsLoading,
+    updateUserInfo: useUserInfoActions().updateUserInfo,
+  };
+
+  const presenterRef = useRef<RegisterPresenter | null>(null);
+  if (!presenterRef.current) {
+    presenterRef.current = new RegisterPresenter(listener);
+  }
 
   const registerOnEnter = (event: React.KeyboardEvent<HTMLElement>) => {
-    if (event.key == "Enter" && !presenterRef.current!.checkSubmitButtonStatus(firstName, lastName, alias, password, imageUrl, imageFileExtension)) {
-
-     presenterRef.current!.doRegister(firstName, lastName, alias, password, imageBytes, imageFileExtension, rememberMe)
+    if (
+      event.key == "Enter" &&
+      !presenterRef.current!.checkSubmitButtonStatus(
+        alias,
+        password,
+        firstName,
+        lastName,
+        imageUrl,
+        imageFileExtension,
+      )
+    ) {
+      presenterRef.current!.doSignIn(
+        alias,
+        password,
+        rememberMe,
+        "",
+        firstName,
+        lastName,
+        imageBytes,
+        imageFileExtension,
+      );
     }
   };
 
@@ -47,7 +68,6 @@ const Register = () => {
     const file = event.target.files?.[0];
     presenterRef.current!.handleImageFile(file);
   };
-
 
   const inputFieldFactory = () => {
     return (
@@ -76,7 +96,32 @@ const Register = () => {
           />
           <label htmlFor="lastNameInput">Last Name</label>
         </div>
-        <AuthenticationFields checkSubmitButtonStatus={() =>presenterRef.current!.checkSubmitButtonStatus(firstName, lastName, alias, password, imageUrl, imageFileExtension)} doFunction={() =>presenterRef.current!.doRegister(firstName, lastName, alias, password, imageBytes, imageFileExtension, rememberMe)} setAlias={setAlias} setPassword={setPassword} />
+        <AuthenticationFields
+          checkSubmitButtonStatus={() =>
+            presenterRef.current!.checkSubmitButtonStatus(
+              alias,
+              password,
+              firstName,
+              lastName,
+              imageUrl,
+              imageFileExtension,
+            )
+          }
+          doFunction={() =>
+            presenterRef.current!.doSignIn(
+              alias,
+              password,
+              rememberMe,
+              "",
+              firstName,
+              lastName,
+              imageBytes,
+              imageFileExtension,
+            )
+          }
+          setAlias={setAlias}
+          setPassword={setPassword}
+        />
         <div className="form-floating mb-3">
           <input
             type="file"
@@ -112,9 +157,29 @@ const Register = () => {
       inputFieldFactory={inputFieldFactory}
       switchAuthenticationMethodFactory={switchAuthenticationMethodFactory}
       setRememberMe={setRememberMe}
-      submitButtonDisabled={() =>presenterRef.current!.checkSubmitButtonStatus(firstName, lastName, alias, password, imageUrl, imageFileExtension)}
+      submitButtonDisabled={() =>
+        presenterRef.current!.checkSubmitButtonStatus(
+          alias,
+          password,
+          firstName,
+          lastName,
+          imageUrl,
+          imageFileExtension,
+        )
+      }
       isLoading={isLoading}
-      submit={() =>presenterRef.current!.doRegister(firstName, lastName, alias, password, imageBytes, imageFileExtension, rememberMe)}
+      submit={() =>
+        presenterRef.current!.doSignIn(
+          alias,
+          password,
+          rememberMe,
+          "",
+          firstName,
+          lastName,
+          imageBytes,
+          imageFileExtension,
+        )
+      }
     />
   );
 };

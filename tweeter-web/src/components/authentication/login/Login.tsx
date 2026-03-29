@@ -6,7 +6,8 @@ import AuthenticationFormLayout from "../AuthenticationFormLayout";
 import AuthenticationFields from "../AuthenticationFields";
 import { useMessageActions } from "../../toaster/MessageHooks";
 import { useUserInfoActions } from "../../userInfo/UserInfoHooks";
-import { LoginPresenter, LoginView } from "../../../presenter/LoginPresenter";
+import { LoginPresenter } from "../../../presenter/LoginPresenter";
+import { UserSignInView } from "../../../presenter/UserSignInPresenter";
 
 interface Props {
   originalUrl?: string;
@@ -19,7 +20,7 @@ const Login = (props: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const { displayErrorMessage } = useMessageActions();
 
-  const listener: LoginView = {
+  const listener: UserSignInView = {
     navigate: useNavigate(),
     displayErrorMessage: displayErrorMessage,
     setIsLoading: setIsLoading,
@@ -39,7 +40,7 @@ const Login = (props: Props) => {
             presenterRef.current!.checkSubmitButtonStatus(alias, password)
           }
           doFunction={() =>
-            presenterRef.current!.doLogin(
+            presenterRef.current!.doSignIn(
               alias,
               password,
               rememberMe,
@@ -74,7 +75,7 @@ const Login = (props: Props) => {
       }
       isLoading={isLoading}
       submit={() =>
-        presenterRef.current!.doLogin(
+        presenterRef.current!.doSignIn(
           alias,
           password,
           rememberMe,

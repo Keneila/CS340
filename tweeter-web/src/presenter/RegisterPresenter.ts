@@ -1,28 +1,20 @@
 import { AuthToken, User } from "tweeter-shared";
-import { UserService } from "../model.service/UserService";
 import { Buffer } from "buffer";
-import { UserSignInView } from "./UserSignInPresenter";
+import { UserSignInPresenter, UserSignInView } from "./UserSignInPresenter";
 export interface RegisterView extends UserSignInView {
   setImageUrl: (url: string) => void;
   setImageBytes: (bytes: Uint8Array) => void;
   setImageFileExtension: (extension: string) => void;
 }
 
-export class RegisterPresenter {
-  private view: RegisterView;
-  private userService: UserService;
-  constructor(view: RegisterView) {
-    this.view = view;
-    this.userService = new UserService();
-  }
-
+export class RegisterPresenter extends UserSignInPresenter<RegisterView> {
   public checkSubmitButtonStatus(
-    firstName: string,
-    lastName: string,
     alias: string,
     password: string,
-    imageUrl: string,
-    imageFileExtension: string,
+    firstName?: string,
+    lastName?: string,
+    imageUrl?: string,
+    imageFileExtension?: string,
   ): boolean {
     return (
       !firstName ||
@@ -31,6 +23,27 @@ export class RegisterPresenter {
       !password ||
       !imageUrl ||
       !imageFileExtension
+    );
+  }
+
+  protected signInDescription(): string {
+    return "register user";
+  }
+  protected async signIn(
+    alias: string,
+    password: string,
+    firstName?: string,
+    lastName?: string,
+    imageBytes?: Uint8Array,
+    imageFileExtension?: string,
+  ): Promise<[User, AuthToken]> {
+    return await this.userService.register(
+      firstName!,
+      lastName!,
+      alias,
+      password,
+      imageBytes!,
+      imageFileExtension!,
     );
   }
 
@@ -68,57 +81,5 @@ export class RegisterPresenter {
 
   public getFileExtension(file: File): string | undefined {
     return file.name.split(".").pop();
-  }
-
-  public async doRegister(
-    firstName: string,
-    lastName: string,
-    alias: string,
-    password: string,
-    imageBytes: Uint8Array,
-    imageFileExtension: string,
-    rememberMe: boolean,
-  ): Promise<void> {
-    try {
-      this.view.setIsLoading(true);
-
-      const [user, authToken] = await this.register(
-        firstName,
-        lastName,
-        alias,
-        password,
-        imageBytes,
-        imageFileExtension,
-      );
-
-      this.view.updateUserInfo(user, user, authToken, rememberMe);
-      this.view.navigate(`/feed/${user.alias}`);
-    } catch (error) {
-      this.view.displayErrorMessage(
-        `Failed to register user because of exception: ${error}`,
-      );
-    } finally {
-      this.view.setIsLoading(false);
-    }
-  }
-
-  public async register(
-    firstName: string,
-    lastName: string,
-    alias: string,
-    password: string,
-    userImageBytes: Uint8Array,
-    imageFileExtension: string,
-  ): Promise<[User, AuthToken]> {
-    // Not neded now, but will be needed when you make the request to the server in milestone 3
-
-    return await this.userService.register(
-      firstName,
-      lastName,
-      alias,
-      password,
-      userImageBytes,
-      imageFileExtension,
-    );
   }
 }

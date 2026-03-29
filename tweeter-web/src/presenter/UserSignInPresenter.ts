@@ -1,5 +1,6 @@
 import { User, AuthToken } from "tweeter-shared";
 import { Presenter, View } from "./Presenter";
+import { UserService } from "../model.service/UserService";
 
 export interface UserSignInView extends View {
   navigate: (url: string) => void;
@@ -15,6 +16,10 @@ export interface UserSignInView extends View {
 export abstract class UserSignInPresenter<
   T extends UserSignInView,
 > extends Presenter<T> {
+  private _userService = new UserService();
+  protected get userService() {
+    return this._userService;
+  }
   public abstract checkSubmitButtonStatus(
     alias: string,
     password: string,
@@ -29,7 +34,7 @@ export abstract class UserSignInPresenter<
     password: string,
     firstName?: string,
     lastName?: string,
-    userImageBytes?: Uint8Array,
+    imageBytes?: Uint8Array,
     imageFileExtension?: string,
   ): Promise<[User, AuthToken]>;
 
@@ -55,7 +60,7 @@ export abstract class UserSignInPresenter<
           imageFileExtension,
         );
         this.view.updateUserInfo(user, user, authToken, rememberMe);
-        if (originalUrl !== "") {
+        if (!!originalUrl) {
           this.view.navigate(originalUrl);
         } else {
           this.view.navigate(`/feed/${user.alias}`);
