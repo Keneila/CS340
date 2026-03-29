@@ -17,24 +17,38 @@ const Login = (props: Props) => {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const {displayErrorMessage } = useMessageActions();
+  const { displayErrorMessage } = useMessageActions();
 
   const listener: LoginView = {
-      navigate: useNavigate(),
-      displayErrorMessage: displayErrorMessage,
-      setIsLoading: setIsLoading,
-      updateUserInfo: useUserInfoActions().updateUserInfo
-    };
+    navigate: useNavigate(),
+    displayErrorMessage: displayErrorMessage,
+    setIsLoading: setIsLoading,
+    updateUserInfo: useUserInfoActions().updateUserInfo,
+  };
 
   const presenterRef = useRef<LoginPresenter | null>(null);
   if (!presenterRef.current) {
-      presenterRef.current = new LoginPresenter(listener);
+    presenterRef.current = new LoginPresenter(listener);
   }
 
   const inputFieldFactory = () => {
     return (
       <>
-        < AuthenticationFields checkSubmitButtonStatus={() => presenterRef.current!.checkSubmitButtonStatus(alias, password)} doFunction={() => presenterRef.current!.doLogin(alias, password, rememberMe, props.originalUrl ? props.originalUrl : "")} setAlias={setAlias} setPassword={setPassword} />
+        <AuthenticationFields
+          checkSubmitButtonStatus={() =>
+            presenterRef.current!.checkSubmitButtonStatus(alias, password)
+          }
+          doFunction={() =>
+            presenterRef.current!.doLogin(
+              alias,
+              password,
+              rememberMe,
+              props.originalUrl ? props.originalUrl : "",
+            )
+          }
+          setAlias={setAlias}
+          setPassword={setPassword}
+        />
       </>
     );
   };
@@ -55,12 +69,20 @@ const Login = (props: Props) => {
       inputFieldFactory={inputFieldFactory}
       switchAuthenticationMethodFactory={switchAuthenticationMethodFactory}
       setRememberMe={setRememberMe}
-      submitButtonDisabled={() => presenterRef.current!.checkSubmitButtonStatus(alias, password)}
+      submitButtonDisabled={() =>
+        presenterRef.current!.checkSubmitButtonStatus(alias, password)
+      }
       isLoading={isLoading}
-      submit={() => presenterRef.current!.doLogin(alias, password, rememberMe, props.originalUrl ? props.originalUrl : "")}
+      submit={() =>
+        presenterRef.current!.doLogin(
+          alias,
+          password,
+          rememberMe,
+          props.originalUrl ? props.originalUrl : "",
+        )
+      }
     />
   );
 };
 
 export default Login;
-

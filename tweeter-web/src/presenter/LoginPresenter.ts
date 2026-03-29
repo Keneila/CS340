@@ -2,26 +2,31 @@ import { User, AuthToken } from "tweeter-shared";
 import { UserService } from "../model.service/UserService";
 
 export interface LoginView {
-    navigate: (url: string) => void;
-    displayErrorMessage: (message: string) => void;
-    setIsLoading: (isLoading: boolean) => void;
-    updateUserInfo: (currentUser: User,
-      displayedUser: User | null,
-      authToken: AuthToken,
-      remember: boolean)    => void;
+  navigate: (url: string) => void;
+  displayErrorMessage: (message: string) => void;
+  setIsLoading: (isLoading: boolean) => void;
+  updateUserInfo: (
+    currentUser: User,
+    displayedUser: User | null,
+    authToken: AuthToken,
+    remember: boolean,
+  ) => void;
 }
 
-
 export class LoginPresenter {
-    private view: LoginView;
-    private userService: UserService;
-    constructor(view: LoginView) {
-        this.view = view;
-        this.userService = new UserService();
-    }
-    
+  private view: LoginView;
+  private userService: UserService;
+  constructor(view: LoginView) {
+    this.view = view;
+    this.userService = new UserService();
+  }
 
-    public async doLogin (alias: string, password: string, rememberMe: boolean, originalUrl: string): Promise<void> {
+  public async doLogin(
+    alias: string,
+    password: string,
+    rememberMe: boolean,
+    originalUrl?: string,
+  ): Promise<void> {
     try {
       this.view.setIsLoading(true);
 
@@ -35,26 +40,24 @@ export class LoginPresenter {
         this.view.navigate(`/feed/${user.alias}`);
       }
     } catch (error) {
-      this.view.displayErrorMessage(`Failed to log user in because of exception: ${error}`);
+      this.view.displayErrorMessage(
+        `Failed to log user in because of exception: ${error}`,
+      );
     } finally {
       this.view.setIsLoading(false);
     }
-  };
+  }
 
-  public checkSubmitButtonStatus (alias: string, password: string): boolean {
+  public checkSubmitButtonStatus(alias: string, password: string): boolean {
     return !alias || !password;
-  };
+  }
 
-    public async login(
-          alias: string,
-          password: string
-        ): Promise<[User, AuthToken]> {
-        // TODO: Replace with the result of calling the server
+  public async login(
+    alias: string,
+    password: string,
+  ): Promise<[User, AuthToken]> {
+    // TODO: Replace with the result of calling the server
 
-          return await this.userService.login(alias, password);
-      };
-    
-
-
-    
+    return await this.userService.login(alias, password);
+  }
 }
