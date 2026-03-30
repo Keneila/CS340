@@ -34,8 +34,6 @@ export class UserInfoPresenter extends Presenter<UserInfoView> {
           authToken!,
           displayedUser!,
         );
-        //DELETE
-        userToast = this.view.displayInfoMessage(`after operation`, 0);
 
         this.view.setIsFollower(isFollower);
         this.view.setFollowerCount(followerCount);
@@ -49,12 +47,13 @@ export class UserInfoPresenter extends Presenter<UserInfoView> {
       },
     );
   }
+
   public async unfollowDisplayedUserCode(
     displayedUser: User,
     authToken: AuthToken,
   ): Promise<void> {
     await this.updateFollowCode(
-      this.userService.unfollow,
+      (authToken, displayedUser) => this.unfollow(authToken, displayedUser),
       displayedUser,
       authToken,
       "unfollow",
@@ -67,7 +66,7 @@ export class UserInfoPresenter extends Presenter<UserInfoView> {
     authToken: AuthToken,
   ): Promise<void> {
     await this.updateFollowCode(
-      this.userService.follow,
+      (authToken, displayedUser) => this.follow(authToken, displayedUser),
       displayedUser,
       authToken,
       "follow",
@@ -78,7 +77,7 @@ export class UserInfoPresenter extends Presenter<UserInfoView> {
   public async setNumbFollowers(authToken: AuthToken, displayedUser: User) {
     await this.doFailureReportingOperation(async () => {
       this.view.setFollowerCount(
-        await this.userService.getFollowerCount(authToken, displayedUser),
+        await this.getFollowerCount(authToken, displayedUser),
       );
       return [""];
     }, "get followers count");
@@ -87,7 +86,7 @@ export class UserInfoPresenter extends Presenter<UserInfoView> {
   public async setNumbFollowees(authToken: AuthToken, displayedUser: User) {
     await this.doFailureReportingOperation(async () => {
       this.view.setFolloweeCount(
-        await this.userService.getFolloweeCount(authToken, displayedUser),
+        await this.getFolloweeCount(authToken, displayedUser),
       );
       return [""];
     }, "get followees count");
@@ -103,7 +102,7 @@ export class UserInfoPresenter extends Presenter<UserInfoView> {
         this.view.setIsFollower(false);
       } else {
         this.view.setIsFollower(
-          await this.userService.getIsFollowerStatus(
+          await this.getIsFollowerStatus(
             authToken!,
             currentUser!,
             displayedUser!,
