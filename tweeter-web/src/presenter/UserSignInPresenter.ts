@@ -65,6 +65,7 @@ export abstract class UserSignInPresenter<
         } else {
           this.view.navigate(`/feed/${user.alias}`);
         }
+        return [""];
       },
       this.signInDescription(),
       () => this.view.setIsLoading(false),

@@ -3,32 +3,30 @@ import { UserService } from "../model.service/UserService";
 import { MessageView, Presenter } from "./Presenter";
 
 export interface LogoutView extends MessageView {
-    navigate: (url: string) => void;
-    clearUserInfo: () => void;
+  navigate: (url: string) => void;
+  clearUserInfo: () => void;
 }
 
-
 export class LogoutPresenter extends Presenter<LogoutView> {
-    private userService: UserService;
-    constructor(view: LogoutView) {
-        super(view);
-        this.userService = new UserService();
-    }
+  private userService: UserService;
+  constructor(view: LogoutView) {
+    super(view);
+    this.userService = new UserService();
+  }
 
-    public async logOut (authToken: AuthToken): Promise<void> {
+  public async logOut(authToken: AuthToken): Promise<void> {
     const loggingOutToastId = this.view.displayInfoMessage("Logging Out...", 0);
-      await this.doFailureReportingOperation(async () => {
-        await this.logout(authToken!);
-        this.view.deleteMessage(loggingOutToastId);
-        this.view.clearUserInfo();
-        this.view.navigate("/login");
-      }, "log user out");
-  };
+    await this.doFailureReportingOperation(async () => {
+      await this.logout(authToken!);
+      this.view.deleteMessage(loggingOutToastId);
+      this.view.clearUserInfo();
+      this.view.navigate("/login");
+      return [""];
+    }, "log user out");
+  }
 
-  public async logout (authToken: AuthToken): Promise<void> {
+  public async logout(authToken: AuthToken): Promise<void> {
     // Pause so we can see the logging out message. Delete when the call to the server is implemented.
     await this.userService.logout(authToken);
-  };
-
-
+  }
 }

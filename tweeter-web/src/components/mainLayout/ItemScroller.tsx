@@ -1,34 +1,39 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, ReactElement } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { User } from "tweeter-shared";
 import { useParams } from "react-router-dom";
-import UserItem from "../userItem/UserItem";
 import { useMessageActions } from "../toaster/MessageHooks";
 import { useUserInfo, useUserInfoActions } from "../userInfo/UserInfoHooks";
-import { UserItemPresenter } from "../../presenter/UserItemPresenter";
-import { PagedItemView } from "../../presenter/PagedItemPresenter";
+import {
+  PagedItemPresenter,
+  PagedItemView,
+} from "../../presenter/PagedItemPresenter";
+import { Service } from "../../model.service/Service";
 
-interface Props {
+interface Props<U, S extends Service, T extends PagedItemPresenter<U, S>> {
   key: string;
   featureUrl: string;
-  presenterFactory: (listener: PagedItemView<User>) => UserItemPresenter;
+  presenterFactory: (listener: PagedItemView<U>) => T;
+  itemComponentFactory: (item: U, featureUrl: string) => JSX.Element;
 }
 
-const UserItemScroller = (props: Props) => {
+const ItemScroller = <U, S extends Service, T extends PagedItemPresenter<U, S>>(
+  props: Props<U, S, T>,
+) => {
   const { displayErrorMessage } = useMessageActions();
-  const [items, setItems] = useState<User[]>([]);
+  const [items, setItems] = useState<U[]>([]);
 
   const { displayedUser, authToken } = useUserInfo();
   const { setDisplayedUser } = useUserInfoActions();
   const { displayedUser: displayedUserAliasParam } = useParams();
 
-  const listener: PagedItemView<User> = {
-    addItems: (newItems: User[]) =>
+  const listener: PagedItemView<U> = {
+    addItems: (newItems: U[]) =>
       setItems((previousItems) => [...previousItems, ...newItems]),
     displayErrorMessage: displayErrorMessage,
   };
 
-  const presenterRef = useRef<UserItemPresenter | null>(null);
+  const presenterRef = useRef<T | null>(null);
   if (!presenterRef.current) {
     presenterRef.current = props.presenterFactory(listener);
   }
@@ -79,7 +84,7 @@ const UserItemScroller = (props: Props) => {
             key={index}
             className="row mb-3 mx-0 px-0 border rounded bg-white"
           >
-            <UserItem user={item} featurePath={props.featureUrl} />
+            {props.itemComponentFactory(item, props.featureUrl)}
           </div>
         ))}
       </InfiniteScroll>
@@ -87,4 +92,4 @@ const UserItemScroller = (props: Props) => {
   );
 };
 
-export default UserItemScroller;
+export default ItemScroller;

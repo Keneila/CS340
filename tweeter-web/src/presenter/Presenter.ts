@@ -16,19 +16,21 @@ export abstract class Presenter<V extends View> {
   }
 
   public async doFailureReportingOperation(
-    operation: () => Promise<void>,
+    operation: (userToast: string) => Promise<[userToast: string]>,
     operationDescription: string,
-    finallyOperation?: () => void,
+    finallyOperation?: (userToast: string) => void,
   ) {
+    var userToast = "";
     try {
-      await operation();
+      const theToast = await operation("");
+      userToast = theToast[0];
     } catch (error) {
       this.view.displayErrorMessage(
         `Failed to ${operationDescription} because of exception: ${error}`,
       );
     } finally {
       if (finallyOperation) {
-        finallyOperation();
+        finallyOperation(userToast);
       }
     }
   }

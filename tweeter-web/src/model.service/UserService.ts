@@ -8,7 +8,7 @@ export class UserService implements Service {
     alias: string,
   ): Promise<User | null> {
     // TODO: Replace with the result of calling server
-    return FakeData.instance.findUserByAlias(alias);
+    return await FakeData.instance.findUserByAlias(alias);
   }
 
   public async login(
@@ -53,7 +53,7 @@ export class UserService implements Service {
     selectedUser: User,
   ): Promise<boolean> {
     // TODO: Replace with the result of calling server
-    return FakeData.instance.isFollower();
+    return await FakeData.instance.isFollower();
   }
 
   public async getFolloweeCount(
@@ -61,7 +61,7 @@ export class UserService implements Service {
     user: User,
   ): Promise<number> {
     // TODO: Replace with the result of calling server
-    return FakeData.instance.getFolloweeCount(user.alias);
+    return await FakeData.instance.getFolloweeCount(user.alias);
   }
 
   public async getFollowerCount(
@@ -69,7 +69,7 @@ export class UserService implements Service {
     user: User,
   ): Promise<number> {
     // TODO: Replace with the result of calling server
-    return FakeData.instance.getFollowerCount(user.alias);
+    return await FakeData.instance.getFollowerCount(user.alias);
   }
 
   public async unfollow(
