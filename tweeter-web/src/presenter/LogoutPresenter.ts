@@ -8,10 +8,14 @@ export interface LogoutView extends MessageView {
 }
 
 export class LogoutPresenter extends Presenter<LogoutView> {
-  private userService: UserService;
+  private _userService: UserService;
   constructor(view: LogoutView) {
     super(view);
-    this.userService = new UserService();
+    this._userService = new UserService();
+  }
+
+  public get userService() {
+    return this._userService;
   }
 
   public async logOut(authToken: AuthToken): Promise<void> {
