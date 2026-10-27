@@ -9,10 +9,13 @@ export interface PostStatusView extends MessageView {
 }
 
 export class PostStatusPresenter extends Presenter<PostStatusView> {
-  private userService = new UserService();
+  private _userService = new UserService();
 
   public checkButtonStatus(authToken: AuthToken, currentUser: User) {
     return !this.view.post.trim() || !authToken || !currentUser;
+  }
+  public get userService() {
+    return this._userService;
   }
 
   public async submitPostCode(authToken: AuthToken, currentUser: User) {
