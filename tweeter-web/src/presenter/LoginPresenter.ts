@@ -17,7 +17,7 @@ export class LoginPresenter extends UserSignInPresenter<UserSignInView> {
   protected signInDescription(): string {
     return "log user in";
   }
-  protected async signIn(
+  public async signIn(
     alias: string,
     password: string,
     firstName?: string,
