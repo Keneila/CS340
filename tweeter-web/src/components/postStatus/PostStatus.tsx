@@ -3,10 +3,16 @@ import { useRef, useState } from "react";
 import { Status } from "tweeter-shared";
 import { useMessageActions } from "../toaster/MessageHooks";
 import { useUserInfo } from "../userInfo/UserInfoHooks";
-import { PostStatusPresenter, PostStatusView } from "../../presenter/PostStatusPresenter";
-
-const PostStatus = () => {
-  const {displayInfoMessage, displayErrorMessage, deleteMessage } = useMessageActions();
+import {
+  PostStatusPresenter,
+  PostStatusView,
+} from "../../presenter/PostStatusPresenter";
+interface Props {
+  presenter?: PostStatusPresenter;
+}
+const PostStatus = (props: Props) => {
+  const { displayInfoMessage, displayErrorMessage, deleteMessage } =
+    useMessageActions();
 
   const { currentUser, authToken } = useUserInfo();
   const [post, setPost] = useState("");
@@ -19,19 +25,18 @@ const PostStatus = () => {
     displayInfoMessage: displayInfoMessage,
     deleteMessage: deleteMessage,
     setIsLoading: setIsLoading,
-      };
+  };
 
   const presenterRef = useRef<PostStatusPresenter | null>(null);
   if (!presenterRef.current) {
-      presenterRef.current = new PostStatusPresenter(listener);
+    presenterRef.current = props.presenter ?? new PostStatusPresenter(listener);
   }
-  const checkButtonStatus = () : boolean => {
-      return !post.trim() || !authToken || !currentUser;
+  const checkButtonStatus = (): boolean => {
+    return !post.trim() || !authToken || !currentUser;
   };
   const submitPost = async (event: React.MouseEvent) => {
     event.preventDefault();
     presenterRef.current!.submitPostCode(authToken!, currentUser!);
-    
   };
 
   const clearPost = (event: React.MouseEvent) => {
