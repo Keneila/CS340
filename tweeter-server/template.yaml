@@ -128,9 +128,24 @@ Resources:
                 responses: *commonAmazonResponses
               responses: *commonSwaggerResponses
 
-            #
-            # TODO: ADD MORE ENDPOINT DEFINITIONS HERE
-            #
+          ##### >>> NEW: /followees endpoint (getFolloweesLambda) >>>
+          /followees:
+            post:
+              consumes: *commonConsumes
+              produces: *commonProduces
+              x-amazon-apigateway-integration:
+                type: aws
+                httpMethod: POST
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${getFolloweesLambda.Arn}/invocations
+                requestTemplates: *commonRequestTemplates
+                responses: *commonAmazonResponses
+              responses: *commonSwaggerResponses
+          ##### <<< END NEW: /followees endpoint <<<
+
+          #
+          # TODO: ADD MORE ENDPOINT DEFINITIONS HERE
+          #
 
   #
   # SQS Queues  (This will become relevant in Milestone 4. For M3, leave this section commented out.)
@@ -191,6 +206,22 @@ Resources:
             RestApiId: !Ref tweeterApi
             Path: /user/create ##### TODO: Set Path
             Method: POST
+
+  ##### >>> NEW: getFolloweesLambda function >>>
+  getFolloweesLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: getFolloweesLambda
+      Handler: lambda/follow/GetFolloweesLambda.handler
+      Policies: *commonPolicies
+      Events:
+        PostApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref tweeterApi
+            Path: /followees
+            Method: POST
+  ##### <<< END NEW: getFolloweesLambda function <<<
 
   #
   # TODO: ADD MORE WEB API LAMBDA DEFINITIONS HERE
