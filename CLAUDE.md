@@ -22,6 +22,7 @@ This is a twitter web application that replicates a very basic social media. The
 - Only read files that you are not specifically told to alter
 - Do not change the starter tests in test/starter/ (provided by the instructor)
 - Do not add npm dependencies without asking
+- No messing with github yourself. I will commit code to github if I choose.
 
 ## AI attribution
 
