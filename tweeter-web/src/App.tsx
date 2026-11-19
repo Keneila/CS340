@@ -23,8 +23,8 @@ import { Status, User } from "tweeter-shared";
 import StatusItem from "./components/statusItem/StatusItem";
 import UserItem from "./components/userItem/UserItem";
 import ItemScroller from "./components/mainLayout/ItemScroller";
-import { StatusService } from "./model.service/StatusService";
-import { FollowService } from "./model.service/FollowService";
+import { StatusService } from "./model/service/StatusService";
+import { FollowService } from "./model/service/FollowService";
 
 const App = () => {
   const { currentUser, authToken } = useUserInfo();
