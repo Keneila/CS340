@@ -279,6 +279,21 @@ Resources:
               responses: *commonSwaggerResponses
           ##### <<< END NEW: /follow endpoint <<<
 
+          ##### >>> NEW: /unfollow endpoint (unfollowLambda) >>>
+          /unfollow:
+            post:
+              consumes: *commonConsumes
+              produces: *commonProduces
+              x-amazon-apigateway-integration:
+                type: aws
+                httpMethod: POST
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${unfollowLambda.Arn}/invocations
+                requestTemplates: *commonRequestTemplates
+                responses: *commonAmazonResponses
+              responses: *commonSwaggerResponses
+          ##### <<< END NEW: /unfollow endpoint <<<
+
           #
           # TODO: ADD MORE ENDPOINT DEFINITIONS HERE
           #
@@ -503,6 +518,22 @@ Resources:
             Path: /follow
             Method: POST
   ##### <<< END NEW: followLambda function <<<
+
+  ##### >>> NEW: unfollowLambda function >>>
+  unfollowLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: unfollowLambda
+      Handler: lambda/user/UnfollowLambda.handler
+      Policies: *commonPolicies
+      Events:
+        PostApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref tweeterApi
+            Path: /unfollow
+            Method: POST
+  ##### <<< END NEW: unfollowLambda function <<<
 
   #
   # TODO: ADD MORE WEB API LAMBDA DEFINITIONS HERE

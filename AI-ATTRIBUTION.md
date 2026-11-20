@@ -69,3 +69,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Create a FollowLambda following the same pattern as the other user lambdas. Approved supporting changes: reuse GetCountRequest as the request, a new FollowResponse (followerCount and followeeCount) with an index.ts export, a /follow endpoint in template.yaml, a ServerFacade follow method, the server UserService.follow taking a token string and alias, and the web UserService.follow calling the server.
 - Review: New code lookes good. There's nothing unexpected.
+
+## 2026-11-20: tweeter-server/src/lambda/user/UnfollowLambda.ts (new file), tweeter-server/src/model/service/UserService.ts, tweeter-server/template.yaml, tweeter-web/src/model/net/ServerFacade.ts, tweeter-web/src/model/service/UserService.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Create an UnfollowLambda following the same pattern as FollowLambda: reuse GetCountRequest and FollowResponse, add an /unfollow endpoint and unfollowLambda function in template.yaml, a ServerFacade unfollow method, the server UserService.unfollow taking a token string and alias (removing the now-unused User import), and the web UserService.unfollow calling the server.
+- Review: New code lookes good. There's nothing unexpected.

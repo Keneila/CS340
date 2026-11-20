@@ -272,4 +272,21 @@ export class ServerFacade {
       throw new Error(response.message ?? undefined);
     }
   }
+
+  public async unfollow(
+    request: GetCountRequest,
+  ): Promise<[followerCount: number, followeeCount: number]> {
+    const response = await this.clientCommunicator.doPost<
+      GetCountRequest,
+      FollowResponse
+    >(request, "/unfollow");
+
+    // Handle errors
+    if (response.success) {
+      return [response.followerCount, response.followeeCount];
+    } else {
+      console.error(response);
+      throw new Error(response.message ?? undefined);
+    }
+  }
 }
