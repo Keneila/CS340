@@ -1,5 +1,4 @@
 // AI-assisted: see AI-ATTRIBUTION.md
-import { Buffer } from "buffer";
 import { AuthToken, FakeData, Status, User, UserDto } from "tweeter-shared";
 import { Service } from "./Service";
 
@@ -25,13 +24,9 @@ export class UserService implements Service {
     lastName: string,
     alias: string,
     password: string,
-    userImageBytes: Uint8Array,
+    userImageBytes: string,
     imageFileExtension: string,
   ): Promise<[UserDto, string]> {
-    // Not neded now, but will be needed when you make the request to the server in milestone 3
-    const imageStringBase64: string =
-      Buffer.from(userImageBytes).toString("base64");
-
     // TODO: Replace with the result of calling the database
     return this.getsignInFakeData("Invalid registration");
   }

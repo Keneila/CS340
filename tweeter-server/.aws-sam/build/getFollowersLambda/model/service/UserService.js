@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 // AI-assisted: see AI-ATTRIBUTION.md
-const buffer_1 = require("buffer");
 const tweeter_shared_1 = require("tweeter-shared");
 class UserService {
     async getUser(authToken, alias) {
@@ -11,15 +10,13 @@ class UserService {
     }
     async login(alias, password) {
         // TODO: Replace with the result of calling the database
-        return this.getFakeData("Invalid alias or password");
+        return this.getsignInFakeData("Invalid alias or password");
     }
     async register(firstName, lastName, alias, password, userImageBytes, imageFileExtension) {
-        // Not neded now, but will be needed when you make the request to the server in milestone 3
-        const imageStringBase64 = buffer_1.Buffer.from(userImageBytes).toString("base64");
         // TODO: Replace with the result of calling the database
-        return this.getFakeData("Invalid registration");
+        return this.getsignInFakeData("Invalid registration");
     }
-    async getFakeData(errorMessage) {
+    async getsignInFakeData(errorMessage) {
         const user = tweeter_shared_1.FakeData.instance.firstUser;
         if (user === null) {
             throw new Error(`[bad-request] ${errorMessage}`);

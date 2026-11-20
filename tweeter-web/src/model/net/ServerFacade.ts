@@ -7,6 +7,7 @@ import {
   PagedStatusItemResponse,
   PagedUserItemRequest,
   PagedUserItemResponse,
+  RegisterRequest,
   Status,
   User,
   UserDto,
@@ -141,6 +142,29 @@ export class ServerFacade {
     if (response.success) {
       if (user == null || response.token == null) {
         throw new Error(`Invalid alias or password`);
+      } else {
+        return [user, new AuthToken(response.token, Date.now())];
+      }
+    } else {
+      console.error(response);
+      throw new Error(response.message ?? undefined);
+    }
+  }
+
+  public async register(request: RegisterRequest): Promise<[User, AuthToken]> {
+    const response = await this.clientCommunicator.doPost<
+      RegisterRequest,
+      LoginResponse
+    >(request, "/register");
+
+    // Convert the UserDto and token string returned by ClientCommunicator to a User and AuthToken
+    const user: User | null =
+      response.success && response.user ? User.fromDto(response.user) : null;
+
+    // Handle errors
+    if (response.success) {
+      if (user == null || response.token == null) {
+        throw new Error(`Invalid registration`);
       } else {
         return [user, new AuthToken(response.token, Date.now())];
       }

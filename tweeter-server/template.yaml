@@ -203,6 +203,21 @@ Resources:
               responses: *commonSwaggerResponses
           ##### <<< END NEW: /login endpoint <<<
 
+          ##### >>> NEW: /register endpoint (registerLambda) >>>
+          /register:
+            post:
+              consumes: *commonConsumes
+              produces: *commonProduces
+              x-amazon-apigateway-integration:
+                type: aws
+                httpMethod: POST
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${registerLambda.Arn}/invocations
+                requestTemplates: *commonRequestTemplates
+                responses: *commonAmazonResponses
+              responses: *commonSwaggerResponses
+          ##### <<< END NEW: /register endpoint <<<
+
           #
           # TODO: ADD MORE ENDPOINT DEFINITIONS HERE
           #
@@ -346,6 +361,22 @@ Resources:
             Path: /login
             Method: POST
   ##### <<< END NEW: loginLambda function <<<
+
+  ##### >>> NEW: registerLambda function >>>
+  registerLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: registerLambda
+      Handler: lambda/user/RegisterLambda.handler
+      Policies: *commonPolicies
+      Events:
+        PostApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref tweeterApi
+            Path: /register
+            Method: POST
+  ##### <<< END NEW: registerLambda function <<<
 
   #
   # TODO: ADD MORE WEB API LAMBDA DEFINITIONS HERE
