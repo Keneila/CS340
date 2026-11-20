@@ -16,3 +16,5 @@ export type { PagedStatusItemRequest } from "./model/net/request/PagedStatusItem
 export type { PagedStatusItemResponse } from "./model/net/response/PagedStatusItemResponse";
 export type { TweeterRequest } from "./model/net/request/TweeterRequest";
 export type { TweeterResponse } from "./model/net/response/TweeterResponse";
+export type { LoginRequest } from "./model/net/request/LoginRequest";
+export type { LoginResponse } from "./model/net/response/LoginResponse";

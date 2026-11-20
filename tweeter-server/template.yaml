@@ -188,6 +188,21 @@ Resources:
               responses: *commonSwaggerResponses
           ##### <<< END NEW: /story endpoint <<<
 
+          ##### >>> NEW: /login endpoint (loginLambda) >>>
+          /login:
+            post:
+              consumes: *commonConsumes
+              produces: *commonProduces
+              x-amazon-apigateway-integration:
+                type: aws
+                httpMethod: POST
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${loginLambda.Arn}/invocations
+                requestTemplates: *commonRequestTemplates
+                responses: *commonAmazonResponses
+              responses: *commonSwaggerResponses
+          ##### <<< END NEW: /login endpoint <<<
+
           #
           # TODO: ADD MORE ENDPOINT DEFINITIONS HERE
           #
@@ -315,6 +330,22 @@ Resources:
             Path: /story
             Method: POST
   ##### <<< END NEW: getStoryItemsLambda function <<<
+
+  ##### >>> NEW: loginLambda function >>>
+  loginLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: loginLambda
+      Handler: lambda/user/LoginLambda.handler
+      Policies: *commonPolicies
+      Events:
+        PostApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref tweeterApi
+            Path: /login
+            Method: POST
+  ##### <<< END NEW: loginLambda function <<<
 
   #
   # TODO: ADD MORE WEB API LAMBDA DEFINITIONS HERE

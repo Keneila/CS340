@@ -13,7 +13,7 @@ import {
   PostStatusPresenter,
 } from "../../src/presenter/PostStatusPresenter";
 import { AuthToken } from "tweeter-shared/dist/model/domain/AuthToken";
-import { UserService } from "../../src/model.service/UserService";
+import { UserService } from "../../src/model/service/UserService";
 import { User } from "tweeter-shared/dist/model/domain/User";
 import { Status } from "tweeter-shared/dist/model/domain/Status";
 

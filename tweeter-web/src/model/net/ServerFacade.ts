@@ -1,5 +1,8 @@
 // AI-assisted: see AI-ATTRIBUTION.md
 import {
+  AuthToken,
+  LoginRequest,
+  LoginResponse,
   PagedStatusItemRequest,
   PagedStatusItemResponse,
   PagedUserItemRequest,
@@ -117,6 +120,29 @@ export class ServerFacade {
         throw new Error(`No story items found`);
       } else {
         return [items, response.hasMore];
+      }
+    } else {
+      console.error(response);
+      throw new Error(response.message ?? undefined);
+    }
+  }
+
+  public async login(request: LoginRequest): Promise<[User, AuthToken]> {
+    const response = await this.clientCommunicator.doPost<
+      LoginRequest,
+      LoginResponse
+    >(request, "/login");
+
+    // Convert the UserDto and token string returned by ClientCommunicator to a User and AuthToken
+    const user: User | null =
+      response.success && response.user ? User.fromDto(response.user) : null;
+
+    // Handle errors
+    if (response.success) {
+      if (user == null || response.token == null) {
+        throw new Error(`Invalid alias or password`);
+      } else {
+        return [user, new AuthToken(response.token, Date.now())];
       }
     } else {
       console.error(response);
