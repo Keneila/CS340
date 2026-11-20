@@ -54,11 +54,11 @@ export class UserService implements Service {
   }
 
   public async getFolloweeCount(
-    authToken: AuthToken,
-    user: User,
+    token: string,
+    userAlias: string,
   ): Promise<number> {
-    // TODO: Replace with the result of calling server
-    return await FakeData.instance.getFolloweeCount(user.alias);
+    // TODO: Replace with the result of calling the database
+    return await FakeData.instance.getFolloweeCount(userAlias);
   }
 
   public async getFollowerCount(
@@ -83,8 +83,8 @@ export class UserService implements Service {
       userToUnfollow,
     );
     const followeeCount = await this.getFolloweeCount(
-      authToken,
-      userToUnfollow,
+      authToken.token,
+      userToUnfollow.alias,
     );
 
     return [followerCount, followeeCount];
@@ -100,7 +100,10 @@ export class UserService implements Service {
     // TODO: Call the server
 
     const followerCount = await this.getFollowerCount(authToken, userToFollow);
-    const followeeCount = await this.getFolloweeCount(authToken, userToFollow);
+    const followeeCount = await this.getFolloweeCount(
+      authToken.token,
+      userToFollow.alias,
+    );
 
     return [followerCount, followeeCount];
   }

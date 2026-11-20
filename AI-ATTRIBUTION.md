@@ -51,3 +51,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Create a GetIsFollowerLambda following the same pattern as the other user lambdas. Approved supporting changes: new IsFollowerRequest and IsFollowerResponse with index.ts exports, a /isfollower endpoint in template.yaml, a ServerFacade isFollower method, the server UserService.getIsFollowerStatus taking a token string and aliases, and the web UserService.getIsFollowerStatus calling the server.
 - Review: New code lookes good. There's nothing unexpected.
+
+## 2026-11-20: tweeter-server/src/lambda/user/GetFolloweeCountLambda.ts (new file), tweeter-shared/src/model/net/request/GetCountRequest.ts (new file), tweeter-shared/src/model/net/response/GetCountResponse.ts (new file), tweeter-shared/src/index.ts, tweeter-server/src/model/service/UserService.ts, tweeter-server/template.yaml, tweeter-web/src/model/net/ServerFacade.ts, tweeter-web/src/model/service/UserService.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Create a GetFolloweeCountLambda in the same pattern as GetIsFollowerLambda: new GetCountRequest and GetCountResponse with index.ts exports, a /followeecount endpoint in template.yaml, a ServerFacade getFolloweeCount method, the server UserService.getFolloweeCount taking a token string and alias (with its follow/unfollow callers updated to match), and the web UserService.getFolloweeCount calling the server.
+- Review: New code lookes good. There's nothing unexpected.

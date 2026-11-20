@@ -64,8 +64,10 @@ export class UserService implements Service {
     authToken: AuthToken,
     user: User,
   ): Promise<number> {
-    // TODO: Replace with the result of calling server
-    return await FakeData.instance.getFolloweeCount(user.alias);
+    return this.serverFacade.getFolloweeCount({
+      token: authToken.token,
+      userAlias: user.alias,
+    });
   }
 
   public async getFollowerCount(
