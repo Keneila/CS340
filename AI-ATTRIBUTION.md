@@ -99,3 +99,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Refactor #4: remove duplication in the shared request/response types by adding an AuthenticatedRequest base (holds token) and generic PagedItemRequest<T>/PagedItemResponse<T>, making the existing request types extend them and the paged User/Status types aliases of the generics. Approved creating the 3 new files; GetCountRequest rename skipped.
 - Review: The refactoring looks good.
+
+## 2026-11-20: tweeter-server/src/lambda/PagedItemHandler.ts (new file), tweeter-server/src/lambda/follow/GetFolloweesLambda.ts, tweeter-server/src/lambda/follow/GetFollowersLambda.ts, tweeter-server/src/lambda/status/GetFeedItemsLambda.ts, tweeter-server/src/lambda/status/GetStoryItemsLambda.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Refactor #2: remove duplication in the four paged-item lambdas by adding a generic createPagedItemHandler<T> factory (approved new file) that builds the handler and success response, so each lambda only supplies which service method loads the page.
+- Review: generic factory looks good. Nothing unexpected.

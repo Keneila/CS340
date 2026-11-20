@@ -1,21 +1,9 @@
 // AI-assisted: see AI-ATTRIBUTION.md
-import { PagedStatusItemRequest, PagedStatusItemResponse } from "tweeter-shared";
+import { StatusDto } from "tweeter-shared";
 import { StatusService } from "../../model/service/StatusService";
+import { createPagedItemHandler } from "../PagedItemHandler";
 
-export const handler = async (
-  request: PagedStatusItemRequest,
-): Promise<PagedStatusItemResponse> => {
-  const statusService = new StatusService();
-  const [items, hasMore] = await statusService.loadMoreFeedItems(
-    request.token,
-    request.userAlias,
-    request.pageSize,
-    request.lastItem,
-  );
-  return {
-    success: true,
-    message: null,
-    items: items,
-    hasMore: hasMore,
-  };
-};
+export const handler = createPagedItemHandler<StatusDto>(
+  (token, userAlias, pageSize, lastItem) =>
+    new StatusService().loadMoreFeedItems(token, userAlias, pageSize, lastItem),
+);

@@ -1,20 +1,9 @@
-import { PagedUserItemRequest, PagedUserItemResponse } from "tweeter-shared";
+// AI-assisted: see AI-ATTRIBUTION.md
+import { UserDto } from "tweeter-shared";
 import { FollowService } from "../../model/service/FollowService";
+import { createPagedItemHandler } from "../PagedItemHandler";
 
-export const handler = async (
-  request: PagedUserItemRequest,
-): Promise<PagedUserItemResponse> => {
-  const followService = new FollowService();
-  const [items, hasMore] = await followService.loadMoreFollowers(
-    request.token,
-    request.userAlias,
-    request.pageSize,
-    request.lastItem,
-  );
-  return {
-    success: true,
-    message: null,
-    items: items,
-    hasMore: hasMore,
-  };
-};
+export const handler = createPagedItemHandler<UserDto>(
+  (token, userAlias, pageSize, lastItem) =>
+    new FollowService().loadMoreFollowers(token, userAlias, pageSize, lastItem),
+);
