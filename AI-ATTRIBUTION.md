@@ -93,3 +93,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Fix "fetch is not defined" in the new integration tests by moving the `@jest-environment node` docblock above the AI-assisted line, since Jest only reads it when it is first in the file (approved exception to the first-line rule).
 - Review: just minor fix, everything looks fine.
+
+## 2026-11-20: tweeter-shared/src/model/net/request/AuthenticatedRequest.ts (new file), tweeter-shared/src/model/net/request/PagedItemRequest.ts (new file), tweeter-shared/src/model/net/response/PagedItemResponse.ts (new file), tweeter-shared/src/model/net/request/PagedUserItemRequest.ts, tweeter-shared/src/model/net/request/PagedStatusItemRequest.ts, tweeter-shared/src/model/net/response/PagedUserItemResponse.ts, tweeter-shared/src/model/net/response/PagedStatusItemResponse.ts, tweeter-shared/src/model/net/request/GetCountRequest.ts, tweeter-shared/src/model/net/request/GetUserRequest.ts, tweeter-shared/src/model/net/request/IsFollowerRequest.ts, tweeter-shared/src/model/net/request/LogoutRequest.ts, tweeter-shared/src/model/net/request/PostStatusRequest.ts, tweeter-shared/src/index.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Refactor #4: remove duplication in the shared request/response types by adding an AuthenticatedRequest base (holds token) and generic PagedItemRequest<T>/PagedItemResponse<T>, making the existing request types extend them and the paged User/Status types aliases of the generics. Approved creating the 3 new files; GetCountRequest rename skipped.
+- Review: The refactoring looks good.

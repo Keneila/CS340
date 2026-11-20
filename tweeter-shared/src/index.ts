@@ -16,6 +16,9 @@ export type { PagedStatusItemRequest } from "./model/net/request/PagedStatusItem
 export type { PagedStatusItemResponse } from "./model/net/response/PagedStatusItemResponse";
 export type { TweeterRequest } from "./model/net/request/TweeterRequest";
 export type { TweeterResponse } from "./model/net/response/TweeterResponse";
+export type { AuthenticatedRequest } from "./model/net/request/AuthenticatedRequest";
+export type { PagedItemRequest } from "./model/net/request/PagedItemRequest";
+export type { PagedItemResponse } from "./model/net/response/PagedItemResponse";
 export type { LoginRequest } from "./model/net/request/LoginRequest";
 export type { LoginResponse } from "./model/net/response/LoginResponse";
 export type { RegisterRequest } from "./model/net/request/RegisterRequest";

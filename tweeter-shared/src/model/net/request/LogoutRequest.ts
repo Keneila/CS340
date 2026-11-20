@@ -1,6 +1,4 @@
 // AI-assisted: see AI-ATTRIBUTION.md
-import { TweeterRequest } from "./TweeterRequest";
+import { AuthenticatedRequest } from "./AuthenticatedRequest";
 
-export interface LogoutRequest extends TweeterRequest {
-  readonly token: string;
-}
+export type LogoutRequest = AuthenticatedRequest;

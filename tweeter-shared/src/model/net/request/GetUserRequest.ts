@@ -1,7 +1,6 @@
 // AI-assisted: see AI-ATTRIBUTION.md
-import { TweeterRequest } from "./TweeterRequest";
+import { AuthenticatedRequest } from "./AuthenticatedRequest";
 
-export interface GetUserRequest extends TweeterRequest {
-  readonly token: string;
+export interface GetUserRequest extends AuthenticatedRequest {
   readonly alias: string;
 }

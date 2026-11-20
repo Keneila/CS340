@@ -1,8 +1,7 @@
 // AI-assisted: see AI-ATTRIBUTION.md
 import { StatusDto } from "../../dto/StatusDto";
-import { TweeterRequest } from "./TweeterRequest";
+import { AuthenticatedRequest } from "./AuthenticatedRequest";
 
-export interface PostStatusRequest extends TweeterRequest {
-  readonly token: string;
+export interface PostStatusRequest extends AuthenticatedRequest {
   readonly newStatus: StatusDto;
 }

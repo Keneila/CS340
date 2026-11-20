@@ -1,7 +1,5 @@
+// AI-assisted: see AI-ATTRIBUTION.md
 import { UserDto } from "../../dto/UserDto";
-import { TweeterResponse } from "./TweeterResponse";
+import { PagedItemResponse } from "./PagedItemResponse";
 
-export interface PagedUserItemResponse extends TweeterResponse {
-  readonly items: UserDto[] | null;
-  readonly hasMore: boolean;
-}
+export type PagedUserItemResponse = PagedItemResponse<UserDto>;

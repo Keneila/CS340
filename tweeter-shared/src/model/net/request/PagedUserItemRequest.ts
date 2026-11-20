@@ -1,9 +1,5 @@
+// AI-assisted: see AI-ATTRIBUTION.md
 import { UserDto } from "../../dto/UserDto";
-import { TweeterRequest } from "./TweeterRequest";
+import { PagedItemRequest } from "./PagedItemRequest";
 
-export interface PagedUserItemRequest extends TweeterRequest {
-  readonly token: string;
-  readonly userAlias: string;
-  readonly pageSize: number;
-  readonly lastItem: UserDto | null;
-}
+export type PagedUserItemRequest = PagedItemRequest<UserDto>;
