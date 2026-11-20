@@ -7,6 +7,6 @@ architecture = "x86_64"
 handler = "handlers/users/UserGetHandler.userGetHandler"
 manifest_hash = ""
 packagetype = "Zip"
-functions = ["getFolloweesLambda", "getFollowersLambda", "getFeedItemsLambda", "getStoryItemsLambda", "loginLambda", "registerLambda", "getUserLambda", "logoutLambda"]
+functions = ["getFolloweesLambda", "getFollowersLambda", "getFeedItemsLambda", "getStoryItemsLambda", "loginLambda", "registerLambda", "getUserLambda", "logoutLambda", "getIsFollowerLambda", "getFolloweeCountLambda", "getFollowerCountLambda"]
 
 [layer_build_definitions]
