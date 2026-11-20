@@ -100,6 +100,10 @@ Resources:
           #
 
           ##### >>> NEW: /followees endpoint (getFolloweesLambda) >>>
+          # POST /followees -> getFolloweesLambda
+          # Returns one page of the users that the given user follows (their followees).
+          # Request: { token, userAlias, pageSize, lastItem (UserDto | null) }
+          # Response: { success, message, items (UserDto[]), hasMore }
           /followees:
             post:
               consumes: *commonConsumes
@@ -115,6 +119,10 @@ Resources:
           ##### <<< END NEW: /followees endpoint <<<
 
           ##### >>> NEW: /followers endpoint (getFollowersLambda) >>>
+          # POST /followers -> getFollowersLambda
+          # Returns one page of the users who follow the given user (their followers).
+          # Request: { token, userAlias, pageSize, lastItem (UserDto | null) }
+          # Response: { success, message, items (UserDto[]), hasMore }
           /followers:
             post:
               consumes: *commonConsumes
@@ -130,6 +138,10 @@ Resources:
           ##### <<< END NEW: /followers endpoint <<<
 
           ##### >>> NEW: /feed endpoint (getFeedItemsLambda) >>>
+          # POST /feed -> getFeedItemsLambda
+          # Returns one page of the given user's feed (statuses posted by the users they follow).
+          # Request: { token, userAlias, pageSize, lastItem (StatusDto | null) }
+          # Response: { success, message, items (StatusDto[]), hasMore }
           /feed:
             post:
               consumes: *commonConsumes
@@ -145,6 +157,10 @@ Resources:
           ##### <<< END NEW: /feed endpoint <<<
 
           ##### >>> NEW: /story endpoint (getStoryItemsLambda) >>>
+          # POST /story -> getStoryItemsLambda
+          # Returns one page of the given user's story (statuses the user has posted).
+          # Request: { token, userAlias, pageSize, lastItem (StatusDto | null) }
+          # Response: { success, message, items (StatusDto[]), hasMore }
           /story:
             post:
               consumes: *commonConsumes
@@ -160,6 +176,10 @@ Resources:
           ##### <<< END NEW: /story endpoint <<<
 
           ##### >>> NEW: /login endpoint (loginLambda) >>>
+          # POST /login -> loginLambda
+          # Signs a user in with their alias and password and starts a new session.
+          # Request: { alias, password }
+          # Response: { success, message, user (UserDto), token }
           /login:
             post:
               consumes: *commonConsumes
@@ -175,6 +195,10 @@ Resources:
           ##### <<< END NEW: /login endpoint <<<
 
           ##### >>> NEW: /register endpoint (registerLambda) >>>
+          # POST /register -> registerLambda
+          # Creates a new user account (with a profile image) and signs the new user in.
+          # Request: { firstName, lastName, alias, password, userImageBytes (base64 string), imageFileExtension }
+          # Response: { success, message, user (UserDto), token }
           /register:
             post:
               consumes: *commonConsumes
@@ -190,6 +214,10 @@ Resources:
           ##### <<< END NEW: /register endpoint <<<
 
           ##### >>> NEW: /getuser endpoint (getUserLambda) >>>
+          # POST /getuser -> getUserLambda
+          # Looks up a user by their alias.
+          # Request: { token, alias }
+          # Response: { success, message, user (UserDto | null) }
           /getuser:
             post:
               consumes: *commonConsumes
@@ -205,6 +233,10 @@ Resources:
           ##### <<< END NEW: /getuser endpoint <<<
 
           ##### >>> NEW: /logout endpoint (logoutLambda) >>>
+          # POST /logout -> logoutLambda
+          # Signs the current user out by ending the session tied to their auth token.
+          # Request: { token }
+          # Response: { success, message }
           /logout:
             post:
               consumes: *commonConsumes
@@ -220,6 +252,10 @@ Resources:
           ##### <<< END NEW: /logout endpoint <<<
 
           ##### >>> NEW: /isfollower endpoint (getIsFollowerLambda) >>>
+          # POST /isfollower -> getIsFollowerLambda
+          # Checks whether one user (userAlias) follows another user (selectedUserAlias).
+          # Request: { token, userAlias, selectedUserAlias }
+          # Response: { success, message, isFollower }
           /isfollower:
             post:
               consumes: *commonConsumes
@@ -235,6 +271,10 @@ Resources:
           ##### <<< END NEW: /isfollower endpoint <<<
 
           ##### >>> NEW: /followeecount endpoint (getFolloweeCountLambda) >>>
+          # POST /followeecount -> getFolloweeCountLambda
+          # Returns how many users the given user follows.
+          # Request: { token, userAlias }
+          # Response: { success, message, count }
           /followeecount:
             post:
               consumes: *commonConsumes
@@ -250,6 +290,10 @@ Resources:
           ##### <<< END NEW: /followeecount endpoint <<<
 
           ##### >>> NEW: /followercount endpoint (getFollowerCountLambda) >>>
+          # POST /followercount -> getFollowerCountLambda
+          # Returns how many users follow the given user.
+          # Request: { token, userAlias }
+          # Response: { success, message, count }
           /followercount:
             post:
               consumes: *commonConsumes
@@ -265,6 +309,10 @@ Resources:
           ##### <<< END NEW: /followercount endpoint <<<
 
           ##### >>> NEW: /follow endpoint (followLambda) >>>
+          # POST /follow -> followLambda
+          # Makes the current user follow the given user, then returns that user's updated counts.
+          # Request: { token, userAlias (the user to follow) }
+          # Response: { success, message, followerCount, followeeCount }
           /follow:
             post:
               consumes: *commonConsumes
@@ -280,6 +328,10 @@ Resources:
           ##### <<< END NEW: /follow endpoint <<<
 
           ##### >>> NEW: /unfollow endpoint (unfollowLambda) >>>
+          # POST /unfollow -> unfollowLambda
+          # Makes the current user stop following the given user, then returns that user's updated counts.
+          # Request: { token, userAlias (the user to unfollow) }
+          # Response: { success, message, followerCount, followeeCount }
           /unfollow:
             post:
               consumes: *commonConsumes
@@ -295,6 +347,10 @@ Resources:
           ##### <<< END NEW: /unfollow endpoint <<<
 
           ##### >>> NEW: /poststatus endpoint (postStatusLambda) >>>
+          # POST /poststatus -> postStatusLambda
+          # Posts a new status for the current user, adding it to their story and their followers' feeds.
+          # Request: { token, newStatus (StatusDto) }
+          # Response: { success, message }
           /poststatus:
             post:
               consumes: *commonConsumes

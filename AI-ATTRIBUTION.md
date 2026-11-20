@@ -117,3 +117,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Refactor #1: remove duplication in the client ServerFacade by routing every call through a generic doRequest<REQ, RES, R> template (post, then extract the result or log and throw the server error), with generic getMoreItems<DTO, ITEM> for the four paged calls and signIn/getCount/changeFollow helpers for the login/register, count and follow/unfollow pairs. Public method signatures are unchanged.
 - Review: Nothing unexpected. It works just fine.
+
+## 2026-11-20: tweeter-server/template.yaml
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Add a commented description for each API method in template.yaml (one per lambda), describing what the endpoint does and its request/response fields.
+- Review: Looks good.
