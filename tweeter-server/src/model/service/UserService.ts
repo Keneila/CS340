@@ -45,11 +45,11 @@ export class UserService implements Service {
   }
 
   public async getIsFollowerStatus(
-    authToken: AuthToken,
-    user: User,
-    selectedUser: User,
+    token: string,
+    userAlias: string,
+    selectedUserAlias: string,
   ): Promise<boolean> {
-    // TODO: Replace with the result of calling server
+    // TODO: Replace with the result of calling the database
     return await FakeData.instance.isFollower();
   }
 

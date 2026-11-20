@@ -22,3 +22,5 @@ export type { RegisterRequest } from "./model/net/request/RegisterRequest";
 export type { GetUserRequest } from "./model/net/request/GetUserRequest";
 export type { GetUserResponse } from "./model/net/response/GetUserResponse";
 export type { LogoutRequest } from "./model/net/request/LogoutRequest";
+export type { IsFollowerRequest } from "./model/net/request/IsFollowerRequest";
+export type { IsFollowerResponse } from "./model/net/response/IsFollowerResponse";

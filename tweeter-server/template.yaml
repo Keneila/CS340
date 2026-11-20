@@ -219,6 +219,21 @@ Resources:
               responses: *commonSwaggerResponses
           ##### <<< END NEW: /logout endpoint <<<
 
+          ##### >>> NEW: /isfollower endpoint (getIsFollowerLambda) >>>
+          /isfollower:
+            post:
+              consumes: *commonConsumes
+              produces: *commonProduces
+              x-amazon-apigateway-integration:
+                type: aws
+                httpMethod: POST
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${getIsFollowerLambda.Arn}/invocations
+                requestTemplates: *commonRequestTemplates
+                responses: *commonAmazonResponses
+              responses: *commonSwaggerResponses
+          ##### <<< END NEW: /isfollower endpoint <<<
+
           #
           # TODO: ADD MORE ENDPOINT DEFINITIONS HERE
           #
@@ -379,6 +394,22 @@ Resources:
             Path: /logout
             Method: POST
   ##### <<< END NEW: logoutLambda function <<<
+
+  ##### >>> NEW: getIsFollowerLambda function >>>
+  getIsFollowerLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: getIsFollowerLambda
+      Handler: lambda/user/GetIsFollowerLambda.handler
+      Policies: *commonPolicies
+      Events:
+        PostApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref tweeterApi
+            Path: /isfollower
+            Method: POST
+  ##### <<< END NEW: getIsFollowerLambda function <<<
 
   #
   # TODO: ADD MORE WEB API LAMBDA DEFINITIONS HERE

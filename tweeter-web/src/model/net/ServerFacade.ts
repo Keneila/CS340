@@ -3,6 +3,8 @@ import {
   AuthToken,
   GetUserRequest,
   GetUserResponse,
+  IsFollowerRequest,
+  IsFollowerResponse,
   LoginRequest,
   LoginResponse,
   LogoutRequest,
@@ -201,6 +203,21 @@ export class ServerFacade {
 
     // Handle errors
     if (!response.success) {
+      console.error(response);
+      throw new Error(response.message ?? undefined);
+    }
+  }
+
+  public async isFollower(request: IsFollowerRequest): Promise<boolean> {
+    const response = await this.clientCommunicator.doPost<
+      IsFollowerRequest,
+      IsFollowerResponse
+    >(request, "/isfollower");
+
+    // Handle errors
+    if (response.success) {
+      return response.isFollower;
+    } else {
       console.error(response);
       throw new Error(response.message ?? undefined);
     }

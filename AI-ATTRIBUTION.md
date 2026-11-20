@@ -45,3 +45,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Create a LogoutLambda following the same pattern as the other user lambdas. Approved supporting changes: a new LogoutRequest (reusing TweeterResponse) with an index.ts export, a /logout endpoint in template.yaml, a ServerFacade logout method, the server UserService.logout taking a token string, and the web UserService.logout calling the server.
 - Review: New code lookes good. There's nothing unexpected.
+
+## 2026-11-20: tweeter-server/src/lambda/user/GetIsFollowerLambda.ts (new file), tweeter-shared/src/model/net/request/IsFollowerRequest.ts (new file), tweeter-shared/src/model/net/response/IsFollowerResponse.ts (new file), tweeter-shared/src/index.ts, tweeter-server/src/model/service/UserService.ts, tweeter-server/template.yaml, tweeter-web/src/model/net/ServerFacade.ts, tweeter-web/src/model/service/UserService.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Create a GetIsFollowerLambda following the same pattern as the other user lambdas. Approved supporting changes: new IsFollowerRequest and IsFollowerResponse with index.ts exports, a /isfollower endpoint in template.yaml, a ServerFacade isFollower method, the server UserService.getIsFollowerStatus taking a token string and aliases, and the web UserService.getIsFollowerStatus calling the server.
+- Review: New code lookes good. There's nothing unexpected.

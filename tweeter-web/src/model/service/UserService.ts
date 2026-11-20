@@ -53,8 +53,11 @@ export class UserService implements Service {
     user: User,
     selectedUser: User,
   ): Promise<boolean> {
-    // TODO: Replace with the result of calling server
-    return await FakeData.instance.isFollower();
+    return this.serverFacade.isFollower({
+      token: authToken.token,
+      userAlias: user.alias,
+      selectedUserAlias: selectedUser.alias,
+    });
   }
 
   public async getFolloweeCount(
