@@ -173,6 +173,21 @@ Resources:
               responses: *commonSwaggerResponses
           ##### <<< END NEW: /feed endpoint <<<
 
+          ##### >>> NEW: /story endpoint (getStoryItemsLambda) >>>
+          /story:
+            post:
+              consumes: *commonConsumes
+              produces: *commonProduces
+              x-amazon-apigateway-integration:
+                type: aws
+                httpMethod: POST
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${getStoryItemsLambda.Arn}/invocations
+                requestTemplates: *commonRequestTemplates
+                responses: *commonAmazonResponses
+              responses: *commonSwaggerResponses
+          ##### <<< END NEW: /story endpoint <<<
+
           #
           # TODO: ADD MORE ENDPOINT DEFINITIONS HERE
           #
@@ -284,6 +299,22 @@ Resources:
             Path: /feed
             Method: POST
   ##### <<< END NEW: getFeedItemsLambda function <<<
+
+  ##### >>> NEW: getStoryItemsLambda function >>>
+  getStoryItemsLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: getStoryItemsLambda
+      Handler: lambda/status/GetStoryItemsLambda.handler
+      Policies: *commonPolicies
+      Events:
+        PostApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref tweeterApi
+            Path: /story
+            Method: POST
+  ##### <<< END NEW: getStoryItemsLambda function <<<
 
   #
   # TODO: ADD MORE WEB API LAMBDA DEFINITIONS HERE

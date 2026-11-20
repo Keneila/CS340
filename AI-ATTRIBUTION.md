@@ -15,3 +15,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Create a working GetFeedItemsLambda following the getFollowers/getFollowees pattern, filling in StatusDto, PagedStatusItemRequest/Response, the server StatusService, the lambda, and a getMoreFeedItems ServerFacade method, plus the approved supporting changes (index.ts exports, Status dto/fromDto, /feed in template.yaml, web StatusService calling the server).
 - Review: Looked at all of the new code, while its repetative compared to the pageduseritems, it works. No current changed needed.
+
+## 2026-11-20: tweeter-server/src/lambda/status/GetStoryItemsLambda.ts (new file), tweeter-server/template.yaml, tweeter-web/src/model/net/ServerFacade.ts, tweeter-web/src/model/service/StatusService.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Create a working GetStoryItemsLambda the same way as GetFeedItemsLambda: the lambda, a /story endpoint and function in template.yaml, a getMoreStoryItems ServerFacade method, and the web StatusService calling the server for story items.
+- Review: Looked at all of the new code, while its repetative compared to the the other three, it works. No current changed needed.
