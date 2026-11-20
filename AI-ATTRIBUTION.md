@@ -81,3 +81,15 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Create a PostStatusLambda following the same pattern as the other lambdas. Approved supporting changes: a new PostStatusRequest (token and StatusDto, reusing TweeterResponse) with an index.ts export, a /poststatus endpoint in template.yaml, a ServerFacade postStatus method, moving postStatus from UserService to StatusService on both server and web (removing now-unused imports), and updating PostStatusPresenter and its test to use StatusService.
 - Review: New code lookes good. There's nothing unexpected. I asked it to put PostStatus is the statusservice, instead of user service
+
+## 2026-11-20: tweeter-web/test/model/net/ServerFacade.test.ts (new file), tweeter-web/test/model/service/StatusService.test.ts (new file)
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Write Jest integration tests that call the client ServerFacade against the deployed server (Register, GetFollowers, GetFollowerCount/GetFolloweeCount), and an integration test for StatusService's story retrieval. The tests check results against FakeData.
+- Review: I reviewed the tests to check if they're actually testing what they say they're testing. Everything looks fine.
+
+## 2026-11-20: tweeter-web/test/model/net/ServerFacade.test.ts, tweeter-web/test/model/service/StatusService.test.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Fix "fetch is not defined" in the new integration tests by moving the `@jest-environment node` docblock above the AI-assisted line, since Jest only reads it when it is first in the file (approved exception to the first-line rule).
+- Review: just minor fix, everything looks fine.
