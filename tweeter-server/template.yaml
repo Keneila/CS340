@@ -143,6 +143,21 @@ Resources:
               responses: *commonSwaggerResponses
           ##### <<< END NEW: /followees endpoint <<<
 
+          ##### >>> NEW: /followers endpoint (getFollowersLambda) >>>
+          /followers:
+            post:
+              consumes: *commonConsumes
+              produces: *commonProduces
+              x-amazon-apigateway-integration:
+                type: aws
+                httpMethod: POST
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${getFollowersLambda.Arn}/invocations
+                requestTemplates: *commonRequestTemplates
+                responses: *commonAmazonResponses
+              responses: *commonSwaggerResponses
+          ##### <<< END NEW: /followers endpoint <<<
+
           #
           # TODO: ADD MORE ENDPOINT DEFINITIONS HERE
           #
@@ -222,6 +237,22 @@ Resources:
             Path: /followees
             Method: POST
   ##### <<< END NEW: getFolloweesLambda function <<<
+
+  ##### >>> NEW: getFollowersLambda function >>>
+  getFollowersLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: getFollowersLambda
+      Handler: lambda/follow/GetFollowersLambda.handler
+      Policies: *commonPolicies
+      Events:
+        PostApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref tweeterApi
+            Path: /followers
+            Method: POST
+  ##### <<< END NEW: getFollowersLambda function <<<
 
   #
   # TODO: ADD MORE WEB API LAMBDA DEFINITIONS HERE
