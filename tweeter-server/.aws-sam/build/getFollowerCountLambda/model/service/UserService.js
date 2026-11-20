@@ -3,7 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 // AI-assisted: see AI-ATTRIBUTION.md
 const tweeter_shared_1 = require("tweeter-shared");
-class UserService {
+const Service_1 = require("./Service");
+class UserService extends Service_1.Service {
     async getUser(token, alias) {
         // TODO: Replace with the result of calling the database
         const user = tweeter_shared_1.FakeData.instance.findUserByAlias(alias);
@@ -38,14 +39,15 @@ class UserService {
     }
     async unfollow(token, userToUnfollowAlias) {
         // TODO: Remove the follow relationship from the database
-        const followerCount = await this.getFollowerCount(token, userToUnfollowAlias);
-        const followeeCount = await this.getFolloweeCount(token, userToUnfollowAlias);
-        return [followerCount, followeeCount];
+        return this.getFollowCounts(token, userToUnfollowAlias);
     }
     async follow(token, userToFollowAlias) {
         // TODO: Add the follow relationship to the database
-        const followerCount = await this.getFollowerCount(token, userToFollowAlias);
-        const followeeCount = await this.getFolloweeCount(token, userToFollowAlias);
+        return this.getFollowCounts(token, userToFollowAlias);
+    }
+    async getFollowCounts(token, userAlias) {
+        const followerCount = await this.getFollowerCount(token, userAlias);
+        const followeeCount = await this.getFolloweeCount(token, userAlias);
         return [followerCount, followeeCount];
     }
     async logout(token) {
