@@ -1,3 +1,4 @@
+// AI-assisted: see AI-ATTRIBUTION.md
 export { Follow } from "./model/domain/Follow";
 export { PostSegment, Type } from "./model/domain/PostSegment";
 export { Status } from "./model/domain/Status";
@@ -8,7 +9,10 @@ export { AuthToken } from "./model/domain/AuthToken";
 // uploading to lambda. Instead we have to list each export.
 export { FakeData } from "./util/FakeData";
 export type { UserDto } from "./model/dto/UserDto";
+export type { StatusDto } from "./model/dto/StatusDto";
 export type { PagedUserItemRequest } from "./model/net/request/PagedUserItemRequest";
 export type { PagedUserItemResponse } from "./model/net/response/PagedUserItemResponse";
+export type { PagedStatusItemRequest } from "./model/net/request/PagedStatusItemRequest";
+export type { PagedStatusItemResponse } from "./model/net/response/PagedStatusItemResponse";
 export type { TweeterRequest } from "./model/net/request/TweeterRequest";
 export type { TweeterResponse } from "./model/net/response/TweeterResponse";

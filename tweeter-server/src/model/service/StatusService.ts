@@ -1,24 +1,37 @@
-import { AuthToken, FakeData, Status } from "tweeter-shared";
+// AI-assisted: see AI-ATTRIBUTION.md
+import { FakeData, Status, StatusDto } from "tweeter-shared";
 import { Service } from "./Service";
 
 export class StatusService implements Service {
   public async loadMoreFeedItems(
-    authToken: AuthToken,
+    token: string,
     userAlias: string,
     pageSize: number,
-    lastItem: Status | null,
-  ): Promise<[Status[], boolean]> {
-    // TODO: Replace with the result of calling server
-    return FakeData.instance.getPageOfStatuses(lastItem, pageSize);
+    lastItem: StatusDto | null,
+  ): Promise<[StatusDto[], boolean]> {
+    // TODO: Replace with the result of calling the database
+    return this.getFakeData(lastItem, pageSize);
   }
 
   public async loadMoreStoryItems(
-    authToken: AuthToken,
+    token: string,
     userAlias: string,
     pageSize: number,
-    lastItem: Status | null,
-  ): Promise<[Status[], boolean]> {
-    // TODO: Replace with the result of calling server
-    return FakeData.instance.getPageOfStatuses(lastItem, pageSize);
+    lastItem: StatusDto | null,
+  ): Promise<[StatusDto[], boolean]> {
+    // TODO: Replace with the result of calling the database
+    return this.getFakeData(lastItem, pageSize);
+  }
+
+  private async getFakeData(
+    lastItem: StatusDto | null,
+    pageSize: number,
+  ): Promise<[StatusDto[], boolean]> {
+    const [items, hasMore] = FakeData.instance.getPageOfStatuses(
+      Status.fromDto(lastItem),
+      pageSize,
+    );
+    const dtos = items.map((status) => status.dto);
+    return [dtos, hasMore];
   }
 }

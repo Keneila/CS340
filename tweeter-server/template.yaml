@@ -158,6 +158,21 @@ Resources:
               responses: *commonSwaggerResponses
           ##### <<< END NEW: /followers endpoint <<<
 
+          ##### >>> NEW: /feed endpoint (getFeedItemsLambda) >>>
+          /feed:
+            post:
+              consumes: *commonConsumes
+              produces: *commonProduces
+              x-amazon-apigateway-integration:
+                type: aws
+                httpMethod: POST
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${getFeedItemsLambda.Arn}/invocations
+                requestTemplates: *commonRequestTemplates
+                responses: *commonAmazonResponses
+              responses: *commonSwaggerResponses
+          ##### <<< END NEW: /feed endpoint <<<
+
           #
           # TODO: ADD MORE ENDPOINT DEFINITIONS HERE
           #
@@ -253,6 +268,22 @@ Resources:
             Path: /followers
             Method: POST
   ##### <<< END NEW: getFollowersLambda function <<<
+
+  ##### >>> NEW: getFeedItemsLambda function >>>
+  getFeedItemsLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: getFeedItemsLambda
+      Handler: lambda/status/GetFeedItemsLambda.handler
+      Policies: *commonPolicies
+      Events:
+        PostApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref tweeterApi
+            Path: /feed
+            Method: POST
+  ##### <<< END NEW: getFeedItemsLambda function <<<
 
   #
   # TODO: ADD MORE WEB API LAMBDA DEFINITIONS HERE
