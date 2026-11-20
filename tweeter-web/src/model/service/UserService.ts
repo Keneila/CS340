@@ -1,6 +1,6 @@
 // AI-assisted: see AI-ATTRIBUTION.md
 import { Buffer } from "buffer";
-import { AuthToken, FakeData, Status, User } from "tweeter-shared";
+import { AuthToken, Status, User } from "tweeter-shared";
 import { Service } from "./Service";
 import { ServerFacade } from "../net/ServerFacade";
 
@@ -74,8 +74,10 @@ export class UserService implements Service {
     authToken: AuthToken,
     user: User,
   ): Promise<number> {
-    // TODO: Replace with the result of calling server
-    return await FakeData.instance.getFollowerCount(user.alias);
+    return this.serverFacade.getFollowerCount({
+      token: authToken.token,
+      userAlias: user.alias,
+    });
   }
 
   public async unfollow(

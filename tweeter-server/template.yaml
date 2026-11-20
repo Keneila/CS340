@@ -249,6 +249,21 @@ Resources:
               responses: *commonSwaggerResponses
           ##### <<< END NEW: /followeecount endpoint <<<
 
+          ##### >>> NEW: /followercount endpoint (getFollowerCountLambda) >>>
+          /followercount:
+            post:
+              consumes: *commonConsumes
+              produces: *commonProduces
+              x-amazon-apigateway-integration:
+                type: aws
+                httpMethod: POST
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${getFollowerCountLambda.Arn}/invocations
+                requestTemplates: *commonRequestTemplates
+                responses: *commonAmazonResponses
+              responses: *commonSwaggerResponses
+          ##### <<< END NEW: /followercount endpoint <<<
+
           #
           # TODO: ADD MORE ENDPOINT DEFINITIONS HERE
           #
@@ -441,6 +456,22 @@ Resources:
             Path: /followeecount
             Method: POST
   ##### <<< END NEW: getFolloweeCountLambda function <<<
+
+  ##### >>> NEW: getFollowerCountLambda function >>>
+  getFollowerCountLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: getFollowerCountLambda
+      Handler: lambda/user/GetFollowerCountLambda.handler
+      Policies: *commonPolicies
+      Events:
+        PostApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref tweeterApi
+            Path: /followercount
+            Method: POST
+  ##### <<< END NEW: getFollowerCountLambda function <<<
 
   #
   # TODO: ADD MORE WEB API LAMBDA DEFINITIONS HERE
