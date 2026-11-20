@@ -19,3 +19,5 @@ export type { TweeterResponse } from "./model/net/response/TweeterResponse";
 export type { LoginRequest } from "./model/net/request/LoginRequest";
 export type { LoginResponse } from "./model/net/response/LoginResponse";
 export type { RegisterRequest } from "./model/net/request/RegisterRequest";
+export type { GetUserRequest } from "./model/net/request/GetUserRequest";
+export type { GetUserResponse } from "./model/net/response/GetUserResponse";

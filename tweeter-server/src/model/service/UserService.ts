@@ -4,11 +4,12 @@ import { Service } from "./Service";
 
 export class UserService implements Service {
   public async getUser(
-    authToken: AuthToken,
+    token: string,
     alias: string,
-  ): Promise<User | null> {
-    // TODO: Replace with the result of calling server
-    return await FakeData.instance.findUserByAlias(alias);
+  ): Promise<UserDto | null> {
+    // TODO: Replace with the result of calling the database
+    const user = FakeData.instance.findUserByAlias(alias);
+    return user ? user.dto : null;
   }
 
   public async login(

@@ -1,6 +1,8 @@
 // AI-assisted: see AI-ATTRIBUTION.md
 import {
   AuthToken,
+  GetUserRequest,
+  GetUserResponse,
   LoginRequest,
   LoginResponse,
   PagedStatusItemRequest,
@@ -168,6 +170,21 @@ export class ServerFacade {
       } else {
         return [user, new AuthToken(response.token, Date.now())];
       }
+    } else {
+      console.error(response);
+      throw new Error(response.message ?? undefined);
+    }
+  }
+
+  public async getUser(request: GetUserRequest): Promise<User | null> {
+    const response = await this.clientCommunicator.doPost<
+      GetUserRequest,
+      GetUserResponse
+    >(request, "/getuser");
+
+    // Handle errors. A null user means no user has that alias.
+    if (response.success) {
+      return response.user ? User.fromDto(response.user) : null;
     } else {
       console.error(response);
       throw new Error(response.message ?? undefined);

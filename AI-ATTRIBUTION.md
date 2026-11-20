@@ -33,3 +33,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Create a RegisterLambda following the LoginLambda pattern, and update template.yaml, ServerFacade, and the server UserService for it. Approved supporting changes: a new RegisterRequest (reusing LoginResponse), the index.ts export, and web UserService.register calling the server with the image as a base64 string.
 - Review: All the new files look good, nothing unexpected.
+
+## 2026-11-20: tweeter-server/src/lambda/user/GetUserLambda.ts (new file), tweeter-shared/src/model/net/request/GetUserRequest.ts (new file), tweeter-shared/src/model/net/response/GetUserResponse.ts (new file), tweeter-shared/src/index.ts, tweeter-server/src/model/service/UserService.ts, tweeter-server/template.yaml, tweeter-web/src/model/net/ServerFacade.ts, tweeter-web/src/model/service/UserService.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Create a GetUserLambda following the LoginLambda/RegisterLambda pattern. Approved supporting changes: new GetUserRequest and GetUserResponse with index.ts exports, a /getuser endpoint in template.yaml, a ServerFacade getUser method, the server UserService.getUser taking a token string and returning a UserDto, and the web UserService.getUser calling the server.
+- Review: All the new code looks good. Nothing unexpected.
