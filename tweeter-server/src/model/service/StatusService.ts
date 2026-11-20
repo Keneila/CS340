@@ -2,7 +2,7 @@
 import { FakeData, Status, StatusDto } from "tweeter-shared";
 import { Service } from "./Service";
 
-export class StatusService implements Service {
+export class StatusService extends Service {
   public async loadMoreFeedItems(
     token: string,
     userAlias: string,
@@ -31,11 +31,8 @@ export class StatusService implements Service {
     lastItem: StatusDto | null,
     pageSize: number,
   ): Promise<[StatusDto[], boolean]> {
-    const [items, hasMore] = FakeData.instance.getPageOfStatuses(
-      Status.fromDto(lastItem),
-      pageSize,
+    return this.toDtoPage(
+      FakeData.instance.getPageOfStatuses(Status.fromDto(lastItem), pageSize),
     );
-    const dtos = items.map((status) => status.dto);
-    return [dtos, hasMore];
   }
 }

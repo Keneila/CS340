@@ -2,7 +2,7 @@
 import { FakeData, UserDto } from "tweeter-shared";
 import { Service } from "./Service";
 
-export class UserService implements Service {
+export class UserService extends Service {
   public async getUser(
     token: string,
     alias: string,
@@ -75,16 +75,7 @@ export class UserService implements Service {
   ): Promise<[followerCount: number, followeeCount: number]> {
     // TODO: Remove the follow relationship from the database
 
-    const followerCount = await this.getFollowerCount(
-      token,
-      userToUnfollowAlias,
-    );
-    const followeeCount = await this.getFolloweeCount(
-      token,
-      userToUnfollowAlias,
-    );
-
-    return [followerCount, followeeCount];
+    return this.getFollowCounts(token, userToUnfollowAlias);
   }
 
   public async follow(
@@ -93,14 +84,15 @@ export class UserService implements Service {
   ): Promise<[followerCount: number, followeeCount: number]> {
     // TODO: Add the follow relationship to the database
 
-    const followerCount = await this.getFollowerCount(
-      token,
-      userToFollowAlias,
-    );
-    const followeeCount = await this.getFolloweeCount(
-      token,
-      userToFollowAlias,
-    );
+    return this.getFollowCounts(token, userToFollowAlias);
+  }
+
+  private async getFollowCounts(
+    token: string,
+    userAlias: string,
+  ): Promise<[followerCount: number, followeeCount: number]> {
+    const followerCount = await this.getFollowerCount(token, userAlias);
+    const followeeCount = await this.getFolloweeCount(token, userAlias);
 
     return [followerCount, followeeCount];
   }

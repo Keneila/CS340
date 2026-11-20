@@ -1,8 +1,9 @@
+// AI-assisted: see AI-ATTRIBUTION.md
 import { AuthToken, User, UserDto } from "tweeter-shared";
 import { FakeData } from "tweeter-shared/dist/util/FakeData";
 import { Service } from "./Service";
 
-export class FollowService implements Service {
+export class FollowService extends Service {
   public async loadMoreFollowees(
     token: string,
     userAlias: string,
@@ -24,16 +25,16 @@ export class FollowService implements Service {
   }
 
   private async getFakeData(
-    lastFollower: UserDto | null,
+    lastItem: UserDto | null,
     pageSize: number,
     userAlias: string,
   ): Promise<[UserDto[], boolean]> {
-    const [items, hasMore] = FakeData.instance.getPageOfUsers(
-      User.fromDto(lastFollower),
-      pageSize,
-      userAlias,
+    return this.toDtoPage(
+      FakeData.instance.getPageOfUsers(
+        User.fromDto(lastItem),
+        pageSize,
+        userAlias,
+      ),
     );
-    const dtos = items.map((user) => user.dto);
-    return [dtos, hasMore];
   }
 }

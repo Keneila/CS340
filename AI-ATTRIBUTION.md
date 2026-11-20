@@ -105,3 +105,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Refactor #2: remove duplication in the four paged-item lambdas by adding a generic createPagedItemHandler<T> factory (approved new file) that builds the handler and success response, so each lambda only supplies which service method loads the page.
 - Review: generic factory looks good. Nothing unexpected.
+
+## 2026-11-20: tweeter-server/src/model/service/Service.ts, tweeter-server/src/model/service/FollowService.ts, tweeter-server/src/model/service/StatusService.ts, tweeter-server/src/model/service/UserService.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Refactor #5: remove duplication in the server services by turning Service into an abstract base class with a generic toDtoPage<D> helper (used by FollowService and StatusService getFakeData, which now extend Service), and extracting UserService follow/unfollow's shared count-fetching into a private getFollowCounts method.
+- Review: The code looks good.
