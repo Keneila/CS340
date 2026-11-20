@@ -91,21 +91,18 @@ export class UserService implements Service {
   }
 
   public async follow(
-    authToken: AuthToken,
-    userToFollow: User,
+    token: string,
+    userToFollowAlias: string,
   ): Promise<[followerCount: number, followeeCount: number]> {
-    // Pause so we can see the follow message. Remove when connected to the server
-    await new Promise((f) => setTimeout(f, 2000));
-
-    // TODO: Call the server
+    // TODO: Add the follow relationship to the database
 
     const followerCount = await this.getFollowerCount(
-      authToken.token,
-      userToFollow.alias,
+      token,
+      userToFollowAlias,
     );
     const followeeCount = await this.getFolloweeCount(
-      authToken.token,
-      userToFollow.alias,
+      token,
+      userToFollowAlias,
     );
 
     return [followerCount, followeeCount];

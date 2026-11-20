@@ -1,6 +1,7 @@
 // AI-assisted: see AI-ATTRIBUTION.md
 import {
   AuthToken,
+  FollowResponse,
   GetCountRequest,
   GetCountResponse,
   GetUserRequest,
@@ -249,6 +250,23 @@ export class ServerFacade {
     // Handle errors
     if (response.success) {
       return response.count;
+    } else {
+      console.error(response);
+      throw new Error(response.message ?? undefined);
+    }
+  }
+
+  public async follow(
+    request: GetCountRequest,
+  ): Promise<[followerCount: number, followeeCount: number]> {
+    const response = await this.clientCommunicator.doPost<
+      GetCountRequest,
+      FollowResponse
+    >(request, "/follow");
+
+    // Handle errors
+    if (response.success) {
+      return [response.followerCount, response.followeeCount];
     } else {
       console.error(response);
       throw new Error(response.message ?? undefined);

@@ -264,6 +264,21 @@ Resources:
               responses: *commonSwaggerResponses
           ##### <<< END NEW: /followercount endpoint <<<
 
+          ##### >>> NEW: /follow endpoint (followLambda) >>>
+          /follow:
+            post:
+              consumes: *commonConsumes
+              produces: *commonProduces
+              x-amazon-apigateway-integration:
+                type: aws
+                httpMethod: POST
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${followLambda.Arn}/invocations
+                requestTemplates: *commonRequestTemplates
+                responses: *commonAmazonResponses
+              responses: *commonSwaggerResponses
+          ##### <<< END NEW: /follow endpoint <<<
+
           #
           # TODO: ADD MORE ENDPOINT DEFINITIONS HERE
           #
@@ -472,6 +487,22 @@ Resources:
             Path: /followercount
             Method: POST
   ##### <<< END NEW: getFollowerCountLambda function <<<
+
+  ##### >>> NEW: followLambda function >>>
+  followLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: followLambda
+      Handler: lambda/user/FollowLambda.handler
+      Policies: *commonPolicies
+      Events:
+        PostApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref tweeterApi
+            Path: /follow
+            Method: POST
+  ##### <<< END NEW: followLambda function <<<
 
   #
   # TODO: ADD MORE WEB API LAMBDA DEFINITIONS HERE
