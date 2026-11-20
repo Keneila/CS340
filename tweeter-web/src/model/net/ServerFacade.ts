@@ -5,12 +5,14 @@ import {
   GetUserResponse,
   LoginRequest,
   LoginResponse,
+  LogoutRequest,
   PagedStatusItemRequest,
   PagedStatusItemResponse,
   PagedUserItemRequest,
   PagedUserItemResponse,
   RegisterRequest,
   Status,
+  TweeterResponse,
   User,
   UserDto,
 } from "tweeter-shared";
@@ -186,6 +188,19 @@ export class ServerFacade {
     if (response.success) {
       return response.user ? User.fromDto(response.user) : null;
     } else {
+      console.error(response);
+      throw new Error(response.message ?? undefined);
+    }
+  }
+
+  public async logout(request: LogoutRequest): Promise<void> {
+    const response = await this.clientCommunicator.doPost<
+      LogoutRequest,
+      TweeterResponse
+    >(request, "/logout");
+
+    // Handle errors
+    if (!response.success) {
       console.error(response);
       throw new Error(response.message ?? undefined);
     }

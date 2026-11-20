@@ -204,6 +204,21 @@ Resources:
               responses: *commonSwaggerResponses
           ##### <<< END NEW: /getuser endpoint <<<
 
+          ##### >>> NEW: /logout endpoint (logoutLambda) >>>
+          /logout:
+            post:
+              consumes: *commonConsumes
+              produces: *commonProduces
+              x-amazon-apigateway-integration:
+                type: aws
+                httpMethod: POST
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${logoutLambda.Arn}/invocations
+                requestTemplates: *commonRequestTemplates
+                responses: *commonAmazonResponses
+              responses: *commonSwaggerResponses
+          ##### <<< END NEW: /logout endpoint <<<
+
           #
           # TODO: ADD MORE ENDPOINT DEFINITIONS HERE
           #
@@ -348,6 +363,22 @@ Resources:
             Path: /getuser
             Method: POST
   ##### <<< END NEW: getUserLambda function <<<
+
+  ##### >>> NEW: logoutLambda function >>>
+  logoutLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: logoutLambda
+      Handler: lambda/user/LogoutLambda.handler
+      Policies: *commonPolicies
+      Events:
+        PostApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref tweeterApi
+            Path: /logout
+            Method: POST
+  ##### <<< END NEW: logoutLambda function <<<
 
   #
   # TODO: ADD MORE WEB API LAMBDA DEFINITIONS HERE

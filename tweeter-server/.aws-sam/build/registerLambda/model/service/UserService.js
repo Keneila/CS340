@@ -4,9 +4,10 @@ exports.UserService = void 0;
 // AI-assisted: see AI-ATTRIBUTION.md
 const tweeter_shared_1 = require("tweeter-shared");
 class UserService {
-    async getUser(authToken, alias) {
-        // TODO: Replace with the result of calling server
-        return await tweeter_shared_1.FakeData.instance.findUserByAlias(alias);
+    async getUser(token, alias) {
+        // TODO: Replace with the result of calling the database
+        const user = tweeter_shared_1.FakeData.instance.findUserByAlias(alias);
+        return user ? user.dto : null;
     }
     async login(alias, password) {
         // TODO: Replace with the result of calling the database
@@ -51,9 +52,8 @@ class UserService {
         const followeeCount = await this.getFolloweeCount(authToken, userToFollow);
         return [followerCount, followeeCount];
     }
-    async logout(authToken) {
-        // Pause so we can see the logging out message. Delete when the call to the server is implemented.
-        await new Promise((res) => setTimeout(res, 1000));
+    async logout(token) {
+        // TODO: Invalidate the token in the database
     }
     async postStatus(authToken, newStatus) {
         // Pause so we can see the logging out message. Remove when connected to the server
