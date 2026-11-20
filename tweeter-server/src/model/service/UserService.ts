@@ -1,5 +1,5 @@
 // AI-assisted: see AI-ATTRIBUTION.md
-import { AuthToken, FakeData, Status, UserDto } from "tweeter-shared";
+import { FakeData, UserDto } from "tweeter-shared";
 import { Service } from "./Service";
 
 export class UserService implements Service {
@@ -107,15 +107,5 @@ export class UserService implements Service {
 
   public async logout(token: string): Promise<void> {
     // TODO: Invalidate the token in the database
-  }
-
-  public async postStatus(
-    authToken: AuthToken,
-    newStatus: Status,
-  ): Promise<void> {
-    // Pause so we can see the logging out message. Remove when connected to the server
-    await new Promise((f) => setTimeout(f, 2000));
-
-    // TODO: Call the server to post the status
   }
 }

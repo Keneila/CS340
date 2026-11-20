@@ -75,3 +75,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Create an UnfollowLambda following the same pattern as FollowLambda: reuse GetCountRequest and FollowResponse, add an /unfollow endpoint and unfollowLambda function in template.yaml, a ServerFacade unfollow method, the server UserService.unfollow taking a token string and alias (removing the now-unused User import), and the web UserService.unfollow calling the server.
 - Review: New code lookes good. There's nothing unexpected.
+
+## 2026-11-20: tweeter-server/src/lambda/status/PostStatusLambda.ts (new file), tweeter-shared/src/model/net/request/PostStatusRequest.ts (new file), tweeter-shared/src/index.ts, tweeter-server/src/model/service/StatusService.ts, tweeter-server/src/model/service/UserService.ts, tweeter-server/template.yaml, tweeter-web/src/model/net/ServerFacade.ts, tweeter-web/src/model/service/StatusService.ts, tweeter-web/src/model/service/UserService.ts, tweeter-web/src/presenter/PostStatusPresenter.ts, tweeter-web/test/presenter/PostStatusPresenter.test.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Create a PostStatusLambda following the same pattern as the other lambdas. Approved supporting changes: a new PostStatusRequest (token and StatusDto, reusing TweeterResponse) with an index.ts export, a /poststatus endpoint in template.yaml, a ServerFacade postStatus method, moving postStatus from UserService to StatusService on both server and web (removing now-unused imports), and updating PostStatusPresenter and its test to use StatusService.
+- Review: New code lookes good. There's nothing unexpected. I asked it to put PostStatus is the statusservice, instead of user service

@@ -15,6 +15,7 @@ import {
   PagedStatusItemResponse,
   PagedUserItemRequest,
   PagedUserItemResponse,
+  PostStatusRequest,
   RegisterRequest,
   Status,
   TweeterResponse,
@@ -285,6 +286,19 @@ export class ServerFacade {
     if (response.success) {
       return [response.followerCount, response.followeeCount];
     } else {
+      console.error(response);
+      throw new Error(response.message ?? undefined);
+    }
+  }
+
+  public async postStatus(request: PostStatusRequest): Promise<void> {
+    const response = await this.clientCommunicator.doPost<
+      PostStatusRequest,
+      TweeterResponse
+    >(request, "/poststatus");
+
+    // Handle errors
+    if (!response.success) {
       console.error(response);
       throw new Error(response.message ?? undefined);
     }

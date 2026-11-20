@@ -1,5 +1,6 @@
+// AI-assisted: see AI-ATTRIBUTION.md
 import { AuthToken, Status, User } from "tweeter-shared";
-import { UserService } from "../model/service/UserService";
+import { StatusService } from "../model/service/StatusService";
 import { MessageView, Presenter } from "./Presenter";
 
 export interface PostStatusView extends MessageView {
@@ -9,13 +10,13 @@ export interface PostStatusView extends MessageView {
 }
 
 export class PostStatusPresenter extends Presenter<PostStatusView> {
-  private _userService = new UserService();
+  private _statusService = new StatusService();
 
   public checkButtonStatus(authToken: AuthToken, currentUser: User) {
     return !this.view.post.trim() || !authToken || !currentUser;
   }
-  public get userService() {
-    return this._userService;
+  public get statusService() {
+    return this._statusService;
   }
 
   public async submitPostCode(authToken: AuthToken, currentUser: User) {
@@ -47,9 +48,6 @@ export class PostStatusPresenter extends Presenter<PostStatusView> {
     authToken: AuthToken,
     newStatus: Status,
   ): Promise<void> {
-    // Pause so we can see the logging out message. Remove when connected to the server
-    await this.userService.postStatus(authToken, newStatus);
-
-    // TODO: Call the server to post the status
+    await this.statusService.postStatus(authToken, newStatus);
   }
 }

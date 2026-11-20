@@ -27,3 +27,4 @@ export type { IsFollowerResponse } from "./model/net/response/IsFollowerResponse
 export type { GetCountRequest } from "./model/net/request/GetCountRequest";
 export type { GetCountResponse } from "./model/net/response/GetCountResponse";
 export type { FollowResponse } from "./model/net/response/FollowResponse";
+export type { PostStatusRequest } from "./model/net/request/PostStatusRequest";

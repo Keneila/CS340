@@ -33,4 +33,14 @@ export class StatusService implements Service {
       lastItem: lastItem ? lastItem.dto : null,
     });
   }
+
+  public async postStatus(
+    authToken: AuthToken,
+    newStatus: Status,
+  ): Promise<void> {
+    return this.serverFacade.postStatus({
+      token: authToken.token,
+      newStatus: newStatus.dto,
+    });
+  }
 }

@@ -294,6 +294,21 @@ Resources:
               responses: *commonSwaggerResponses
           ##### <<< END NEW: /unfollow endpoint <<<
 
+          ##### >>> NEW: /poststatus endpoint (postStatusLambda) >>>
+          /poststatus:
+            post:
+              consumes: *commonConsumes
+              produces: *commonProduces
+              x-amazon-apigateway-integration:
+                type: aws
+                httpMethod: POST
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${postStatusLambda.Arn}/invocations
+                requestTemplates: *commonRequestTemplates
+                responses: *commonAmazonResponses
+              responses: *commonSwaggerResponses
+          ##### <<< END NEW: /poststatus endpoint <<<
+
           #
           # TODO: ADD MORE ENDPOINT DEFINITIONS HERE
           #
@@ -534,6 +549,22 @@ Resources:
             Path: /unfollow
             Method: POST
   ##### <<< END NEW: unfollowLambda function <<<
+
+  ##### >>> NEW: postStatusLambda function >>>
+  postStatusLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: postStatusLambda
+      Handler: lambda/status/PostStatusLambda.handler
+      Policies: *commonPolicies
+      Events:
+        PostApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref tweeterApi
+            Path: /poststatus
+            Method: POST
+  ##### <<< END NEW: postStatusLambda function <<<
 
   #
   # TODO: ADD MORE WEB API LAMBDA DEFINITIONS HERE

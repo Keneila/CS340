@@ -23,6 +23,10 @@ export class StatusService implements Service {
     return this.getFakeData(lastItem, pageSize);
   }
 
+  public async postStatus(token: string, newStatus: StatusDto): Promise<void> {
+    // TODO: Save the status to the database
+  }
+
   private async getFakeData(
     lastItem: StatusDto | null,
     pageSize: number,

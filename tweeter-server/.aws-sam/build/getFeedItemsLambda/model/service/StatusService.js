@@ -12,6 +12,9 @@ class StatusService {
         // TODO: Replace with the result of calling the database
         return this.getFakeData(lastItem, pageSize);
     }
+    async postStatus(token, newStatus) {
+        // TODO: Save the status to the database
+    }
     async getFakeData(lastItem, pageSize) {
         const [items, hasMore] = tweeter_shared_1.FakeData.instance.getPageOfStatuses(tweeter_shared_1.Status.fromDto(lastItem), pageSize);
         const dtos = items.map((status) => status.dto);
