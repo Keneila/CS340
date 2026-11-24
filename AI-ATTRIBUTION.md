@@ -195,3 +195,15 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Create DynamoClient (one shared DynamoDB document client for all DynamoDB DAOs) and DynamoDAOFactory, which implements DAOFactory and for now returns the fake DAOs for each DAO not yet written so they can be switched over one at a time.
 - Review: Looks good.
+
+## 2026-11-24: tweeter-server/src/lambda/DAOFactoryProvider.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Switch DAOFactoryProvider to return DynamoDAOFactory instead of FakeDAOFactory, so all lambdas use the DynamoDB factory (which still hands out the fake DAOs until the real ones are written).
+- Review: Looks fine. It wasn't even a full line of code changed.
+
+## 2026-11-24: tweeter-server/template.yaml
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Add the user DynamoDB table to template.yaml (table name "user", partition key "alias", no sort key or index, 1 RCU/1 WCU), with a comment listing the non-key attributes the DAO will store.
+- Review: Table set up yet to be tested, but looks fine for now.
