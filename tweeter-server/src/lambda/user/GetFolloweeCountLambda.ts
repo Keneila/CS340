@@ -2,8 +2,9 @@
 import { GetCountRequest, GetCountResponse } from "tweeter-shared";
 import { UserService } from "../../model/service/UserService";
 import { getDAOFactory } from "../DAOFactoryProvider";
+import { withErrorHandling } from "../ErrorHandler";
 
-export const handler = async (
+const handleRequest = async (
   request: GetCountRequest,
 ): Promise<GetCountResponse> => {
   const userService = new UserService(getDAOFactory());
@@ -17,3 +18,5 @@ export const handler = async (
     count: count,
   };
 };
+
+export const handler = withErrorHandling(handleRequest);

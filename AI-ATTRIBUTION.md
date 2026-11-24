@@ -297,3 +297,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Add the postStatus ownership check: throw "[unauthorized]" if the status's author alias differs from the alias the auth token belongs to, before saving the status or fanning it out.
 - Review: Looks fine.
+
+## 2026-11-24: tweeter-server/src/lambda/ErrorHandler.ts (new file), tweeter-server/src/lambda/PagedItemHandler.ts, tweeter-server/src/lambda/status/PostStatusLambda.ts, tweeter-server/src/lambda/user/FollowLambda.ts, tweeter-server/src/lambda/user/GetFolloweeCountLambda.ts, tweeter-server/src/lambda/user/GetFollowerCountLambda.ts, tweeter-server/src/lambda/user/GetIsFollowerLambda.ts, tweeter-server/src/lambda/user/GetUserLambda.ts, tweeter-server/src/lambda/user/LoginLambda.ts, tweeter-server/src/lambda/user/LogoutLambda.ts, tweeter-server/src/lambda/user/RegisterLambda.ts, tweeter-server/src/lambda/user/UnfollowLambda.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Add a withErrorHandling wrapper that re-throws any error without a bad-request/unauthorized/internal-server-error tag as "[internal-server-error] <message>" (logging it), so API Gateway returns a real error instead of a 200. Applied to the four paged lambdas through createPagedItemHandler and to the other ten lambdas directly.
+- Review: I'm not sure if this needed within the specs, but it seems useful and looks fine.

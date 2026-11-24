@@ -2,8 +2,9 @@
 import { GetUserRequest, GetUserResponse } from "tweeter-shared";
 import { UserService } from "../../model/service/UserService";
 import { getDAOFactory } from "../DAOFactoryProvider";
+import { withErrorHandling } from "../ErrorHandler";
 
-export const handler = async (
+const handleRequest = async (
   request: GetUserRequest,
 ): Promise<GetUserResponse> => {
   const userService = new UserService(getDAOFactory());
@@ -14,3 +15,5 @@ export const handler = async (
     user: user,
   };
 };
+
+export const handler = withErrorHandling(handleRequest);

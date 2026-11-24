@@ -2,8 +2,9 @@
 import { IsFollowerRequest, IsFollowerResponse } from "tweeter-shared";
 import { UserService } from "../../model/service/UserService";
 import { getDAOFactory } from "../DAOFactoryProvider";
+import { withErrorHandling } from "../ErrorHandler";
 
-export const handler = async (
+const handleRequest = async (
   request: IsFollowerRequest,
 ): Promise<IsFollowerResponse> => {
   const userService = new UserService(getDAOFactory());
@@ -18,3 +19,5 @@ export const handler = async (
     isFollower: isFollower,
   };
 };
+
+export const handler = withErrorHandling(handleRequest);

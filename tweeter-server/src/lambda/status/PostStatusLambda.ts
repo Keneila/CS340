@@ -2,8 +2,9 @@
 import { PostStatusRequest, TweeterResponse } from "tweeter-shared";
 import { StatusService } from "../../model/service/StatusService";
 import { getDAOFactory } from "../DAOFactoryProvider";
+import { withErrorHandling } from "../ErrorHandler";
 
-export const handler = async (
+const handleRequest = async (
   request: PostStatusRequest,
 ): Promise<TweeterResponse> => {
   const statusService = new StatusService(getDAOFactory());
@@ -13,3 +14,5 @@ export const handler = async (
     message: null,
   };
 };
+
+export const handler = withErrorHandling(handleRequest);
