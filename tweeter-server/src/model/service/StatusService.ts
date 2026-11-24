@@ -51,6 +51,9 @@ export class StatusService extends Service {
     if (newStatus.user.alias !== currentAlias) {
       throw new Error("[unauthorized] You can only post statuses as yourself");
     }
+    if (!newStatus.post || newStatus.post.trim() === "") {
+      throw new Error("[bad-request] Status text cannot be empty");
+    }
 
     await this.storyDAO.putStatus(newStatus);
     await this.addToFollowerFeeds(newStatus);

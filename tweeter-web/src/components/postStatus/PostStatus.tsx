@@ -1,3 +1,4 @@
+// AI-assisted: see AI-ATTRIBUTION.md
 import "./PostStatus.css";
 import { useRef, useState } from "react";
 import { Status } from "tweeter-shared";
@@ -18,8 +19,16 @@ const PostStatus = (props: Props) => {
   const [post, setPost] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  // The presenter is created once and keeps the first listener it gets, so
+  // post is read through a ref to always give it the current text instead
+  // of the text from the first render ("").
+  const postRef = useRef(post);
+  postRef.current = post;
+
   const listener: PostStatusView = {
-    post: post,
+    get post() {
+      return postRef.current;
+    },
     setPost: setPost,
     displayErrorMessage: displayErrorMessage,
     displayInfoMessage: displayInfoMessage,

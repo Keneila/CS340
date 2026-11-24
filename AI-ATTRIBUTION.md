@@ -327,3 +327,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Create a script that populates the DynamoDB tables with test data through the real DAOs: the 22 FakeData users (password "password"), follows so @allen has 21 followers and followees, and statuses with mentions and URLs in stories and feeds, retrying throttled writes and refusing to run twice.
 - Review: It works. Nothing to note.
+
+## 2026-11-24: tweeter-web/src/components/postStatus/PostStatus.tsx, tweeter-server/src/model/service/StatusService.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Fix new statuses being posted with empty text: PostStatus.tsx gave the once-created presenter a listener whose post was frozen at the first render (""), so the listener now reads post through a ref via a getter. Also make StatusService.postStatus reject empty or whitespace-only posts with a "[bad-request]" error.
+- Review: Changes look good and the error is fixed, so it works.
