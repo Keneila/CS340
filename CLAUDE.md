@@ -1,4 +1,7 @@
 This is a twitter web application that replicates a very basic social media. The front end in tweeter-web is already entirely coded, and does not need to be altered as of right now.
+These links give you context around the assignment requirements, but don't do anything without being asked to, or asking to if it's relevant to a request I make:
+https://github.com/BYU-CS-340/softwaredesign/blob/main/tweeter/project-overview/tweeter.md
+https://github.com/BYU-CS-340/softwaredesign/blob/main/tweeter/milestone-4a/milestone-4a.md
 
 ## Commands
 
