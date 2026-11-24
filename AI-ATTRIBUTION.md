@@ -231,3 +231,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Write DynamoUserDAO, the DynamoDB implementation of UserDAO against the user table (put/get user, batch get users in order with unprocessed-key retries, get password hash, get counts, atomic count updates). Not yet swapped into DynamoDAOFactory.
 - Review: Swapped dynamoDAOFactory, and everything looks like it'll work.
+
+## 2026-11-24: tweeter-server/src/model/dao/s3/S3ImageDAO.ts (new file)
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Write S3ImageDAO, the S3 implementation of ImageDAO: uploads the base64 profile image to the cs-340-krh-images bucket under image/ as a public-read object with a Content-Type from its extension, and returns its public URL. Not yet swapped into DynamoDAOFactory.
+- Review: Reviewed the changes from the milestone 4a specs with the AI. Also swapped it in for DynamoDAOfactory.
