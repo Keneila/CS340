@@ -207,3 +207,21 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Add the user DynamoDB table to template.yaml (table name "user", partition key "alias", no sort key or index, 1 RCU/1 WCU), with a comment listing the non-key attributes the DAO will store.
 - Review: Table set up yet to be tested, but looks fine for now.
+
+## 2026-11-24: tweeter-server/template.yaml
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Add the authtoken (key token, TTL on expires_at), story (author_alias + timestamp), and feed (receiver_alias + time_author) DynamoDB tables to template.yaml, with comments describing each table's non-key attributes.
+- Review: Tables look like they'll work.
+
+## 2026-11-24: tweeter-server/src/model/dao/AuthTokenDAO.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Add an expiresAt parameter (epoch seconds) to AuthTokenDAO.putAuthToken and updateLastUsed, so the DynamoDB DAO can store the TTL attribute without knowing the timeout.
+- Review: Looks fine.
+
+## 2026-11-24: tweeter-server/src/model/service/AuthorizationService.ts, tweeter-server/src/model/service/UserService.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Update the two AuthTokenDAO callers for the new expiresAt parameter: AuthorizationService.authenticate and UserService.startSession now pass now + AUTH_TOKEN_TIMEOUT_SECONDS.
+- Review: Looks fine.

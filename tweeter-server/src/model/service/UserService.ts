@@ -6,7 +6,10 @@ import { DAOFactory } from "../dao/DAOFactory";
 import { FollowDAO } from "../dao/FollowDAO";
 import { ImageDAO } from "../dao/ImageDAO";
 import { UserDAO } from "../dao/UserDAO";
-import { AuthorizationService } from "./AuthorizationService";
+import {
+  AUTH_TOKEN_TIMEOUT_SECONDS,
+  AuthorizationService,
+} from "./AuthorizationService";
 import { Service } from "./Service";
 
 // bcrypt work factor: each +1 doubles hashing time. 10 is the common default.
@@ -80,10 +83,12 @@ export class UserService extends Service {
   // The stored timestamp is in epoch seconds, matching AuthorizationService.
   private async startSession(alias: string): Promise<string> {
     const authToken = AuthToken.Generate();
+    const now = Math.floor(authToken.timestamp / 1000);
     await this.authTokenDAO.putAuthToken(
       authToken.token,
       alias,
-      Math.floor(authToken.timestamp / 1000),
+      now,
+      now + AUTH_TOKEN_TIMEOUT_SECONDS,
     );
     return authToken.token;
   }

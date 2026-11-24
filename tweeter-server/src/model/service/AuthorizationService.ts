@@ -31,7 +31,11 @@ export class AuthorizationService extends Service {
       throw new Error("[unauthorized] Auth token has expired");
     }
 
-    await this.authTokenDAO.updateLastUsed(token, now);
+    await this.authTokenDAO.updateLastUsed(
+      token,
+      now,
+      now + AUTH_TOKEN_TIMEOUT_SECONDS,
+    );
     return record.alias;
   }
 }

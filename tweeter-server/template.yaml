@@ -698,6 +698,75 @@ Resources:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
 
-  #
-  # TODO: ADD MORE TABLE DEFINITIONS HERE
-  #
+  # Auth token table: one item per session, looked up by token.
+  # Other attributes:
+  #   alias (S)      -- the user the token belongs to
+  #   last_used (N)  -- epoch seconds; AuthorizationService checks expiry from this
+  #   expires_at (N) -- epoch seconds (last_used + timeout); DynamoDB TTL deletes
+  #                     expired items with this, but can take days, so the code
+  #                     must still check expiry itself
+  authTokenTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: authtoken
+      AttributeDefinitions:
+        - AttributeName: token
+          AttributeType: S
+      KeySchema:
+        - AttributeName: token
+          KeyType: HASH
+      BillingMode: PROVISIONED
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      TimeToLiveSpecification:
+        AttributeName: expires_at
+        Enabled: true
+
+  # Story table: each user's own statuses, newest first when queried with
+  # ScanIndexForward: false.
+  # Other attributes: post (S)
+  storyTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: story
+      AttributeDefinitions:
+        - AttributeName: author_alias
+          AttributeType: S
+        - AttributeName: timestamp
+          AttributeType: N
+      KeySchema:
+        - AttributeName: author_alias
+          KeyType: HASH
+        - AttributeName: timestamp
+          KeyType: RANGE
+      BillingMode: PROVISIONED
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+
+  # Feed table: precomputed feeds. When a user posts, one item is written here
+  # for each of their followers.
+  # Sort key time_author is "<timestamp>#<author_alias>" (e.g.
+  # "1732471234567#@allen"), so two followees posting in the same millisecond
+  # don't overwrite each other. Millisecond timestamps are all 13 digits, so
+  # these strings sort in time order.
+  # Other attributes: author_alias (S), post (S), timestamp (N)
+  feedTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: feed
+      AttributeDefinitions:
+        - AttributeName: receiver_alias
+          AttributeType: S
+        - AttributeName: time_author
+          AttributeType: S
+      KeySchema:
+        - AttributeName: receiver_alias
+          KeyType: HASH
+        - AttributeName: time_author
+          KeyType: RANGE
+      BillingMode: PROVISIONED
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
