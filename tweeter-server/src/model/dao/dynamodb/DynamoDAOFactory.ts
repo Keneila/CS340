@@ -12,8 +12,8 @@ import {
   FakeFollowDAO,
   FakeImageDAO,
   FakeStoryDAO,
-  FakeUserDAO,
 } from "../fake/FakeDAOFactory";
+import { DynamoUserDAO } from "./DynamoUserDAO";
 
 // Creates the DynamoDB (and S3) DAOs. Each DAO is created once and reused,
 // since the DAOs hold no per-request state.
@@ -22,7 +22,7 @@ import {
 // DAO instead, so the DAOs can be switched over one at a time. Replace each
 // Fake* with the real class as it is written, then remove the fake import.
 export class DynamoDAOFactory implements DAOFactory {
-  private readonly userDAO: UserDAO = new FakeUserDAO(); // TODO: DynamoUserDAO
+  private readonly userDAO: UserDAO = new DynamoUserDAO(); // TODO: DynamoUserDAO
   private readonly authTokenDAO: AuthTokenDAO = new FakeAuthTokenDAO(); // TODO: DynamoAuthTokenDAO
   private readonly followDAO: FollowDAO = new FakeFollowDAO(); // TODO: DynamoFollowDAO
   private readonly storyDAO: StoryDAO = new FakeStoryDAO(); // TODO: DynamoStoryDAO

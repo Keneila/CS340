@@ -225,3 +225,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Update the two AuthTokenDAO callers for the new expiresAt parameter: AuthorizationService.authenticate and UserService.startSession now pass now + AUTH_TOKEN_TIMEOUT_SECONDS.
 - Review: Looks fine.
+
+## 2026-11-24: tweeter-server/src/model/dao/dynamodb/DynamoUserDAO.ts (new file)
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Write DynamoUserDAO, the DynamoDB implementation of UserDAO against the user table (put/get user, batch get users in order with unprocessed-key retries, get password hash, get counts, atomic count updates). Not yet swapped into DynamoDAOFactory.
+- Review: Swapped dynamoDAOFactory, and everything looks like it'll work.
