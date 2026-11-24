@@ -261,3 +261,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Make DynamoFollowDAO extend DynamoPagedDAO: its private getPageOfAliases now builds a PageQuery and calls the shared getPage instead of running its own QueryCommand and hasMore logic.
 - Review: Looks like good code.
+
+## 2026-11-24: tweeter-server/src/model/dao/dynamodb/DynamoStoryDAO.ts (new file)
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Write DynamoStoryDAO, the DynamoDB implementation of StoryDAO against the story table: save a status (author alias, timestamp, post) and return pages of a user's story newest first via DynamoPagedDAO, filling in the author through a UserDAO passed to its constructor.
+- Review: Nothing to note. Looks fine.
