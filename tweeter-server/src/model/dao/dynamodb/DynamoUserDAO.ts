@@ -7,7 +7,7 @@ import {
 } from "@aws-sdk/lib-dynamodb";
 import { UserDto } from "tweeter-shared";
 import { UserDAO } from "../UserDAO";
-import { dynamoClient, sleep } from "./DynamoClient";
+import { dynamoClient, sendInChunksWithRetry } from "./DynamoClient";
 
 // Table and attribute names; these must match the user table in template.yaml.
 const TABLE_NAME = "user";
@@ -66,19 +66,15 @@ export class DynamoUserDAO implements UserDAO {
     const keys = [...new Set(aliases)].map((alias) => ({ [ALIAS]: alias }));
     const usersByAlias = new Map<string, UserDto>();
 
-    for (let start = 0; start < keys.length; start += BATCH_GET_LIMIT) {
-      let pendingKeys: Record<string, unknown>[] = keys.slice(
-        start,
-        start + BATCH_GET_LIMIT,
-      );
-      let attempt = 0;
-
-      while (pendingKeys.length > 0) {
+    await sendInChunksWithRetry<Record<string, unknown>>(
+      keys,
+      BATCH_GET_LIMIT,
+      async (chunk) => {
         const response = await dynamoClient.send(
           new BatchGetCommand({
             RequestItems: {
               [TABLE_NAME]: {
-                Keys: pendingKeys,
+                Keys: chunk,
                 ProjectionExpression: USER_PROJECTION,
                 ExpressionAttributeNames: USER_PROJECTION_NAMES,
               },
@@ -91,13 +87,9 @@ export class DynamoUserDAO implements UserDAO {
           usersByAlias.set(user.alias, user);
         }
 
-        pendingKeys = response.UnprocessedKeys?.[TABLE_NAME]?.Keys ?? [];
-        if (pendingKeys.length > 0) {
-          await sleep(50 * 2 ** attempt);
-          attempt++;
-        }
-      }
-    }
+        return response.UnprocessedKeys?.[TABLE_NAME]?.Keys ?? [];
+      },
+    );
 
     return aliases.flatMap((alias) => {
       const user = usersByAlias.get(alias);

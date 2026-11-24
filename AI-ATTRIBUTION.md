@@ -357,3 +357,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Fix the failing "first page of a user's story" test: it required every status to have non-empty text, but @allen's story holds empty statuses posted before the PostStatus fix. It now only checks that each post is a string.
 - Review: It all looks good.
+
+## 2026-11-24: tweeter-server/src/model/dao/dynamodb/DynamoClient.ts, tweeter-server/src/model/dao/dynamodb/DynamoUserDAO.ts, tweeter-server/src/model/dao/dynamodb/DynamoFeedDAO.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Remove the duplicated batch chunk-and-retry loop from DynamoUserDAO.getUsers and DynamoFeedDAO.putFeedItems by adding a shared generic sendInChunksWithRetry to DynamoClient; each DAO now only supplies how to send one batch and what came back unprocessed.
+- Review: Looks great!

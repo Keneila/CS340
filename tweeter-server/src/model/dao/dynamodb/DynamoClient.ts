@@ -24,3 +24,26 @@ export const dynamoClient: DynamoDBDocumentClient = DynamoDBDocumentClient.from(
 // a batch request left unprocessed.
 export const sleep = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
+
+// Sends items (write requests or keys) to DynamoDB in chunks of at most
+// chunkSize, the most one batch request allows. sendChunk sends one batch
+// request and returns whatever DynamoDB left unprocessed (e.g. when capacity
+// is exceeded). Those are resent with a growing delay until none are left.
+export const sendInChunksWithRetry = async <T>(
+  items: T[],
+  chunkSize: number,
+  sendChunk: (chunk: T[]) => Promise<T[]>,
+): Promise<void> => {
+  for (let start = 0; start < items.length; start += chunkSize) {
+    let pending = items.slice(start, start + chunkSize);
+    let attempt = 0;
+
+    while (pending.length > 0) {
+      pending = await sendChunk(pending);
+      if (pending.length > 0) {
+        await sleep(50 * 2 ** attempt);
+        attempt++;
+      }
+    }
+  }
+};

@@ -6,7 +6,7 @@ import {
 import { StatusDto, UserDto } from "tweeter-shared";
 import { FeedDAO } from "../FeedDAO";
 import { UserDAO } from "../UserDAO";
-import { dynamoClient, sleep } from "./DynamoClient";
+import { dynamoClient, sendInChunksWithRetry } from "./DynamoClient";
 import { DynamoPagedDAO } from "./DynamoPagedDAO";
 
 // Table and attribute names; these must match the feed table in template.yaml.
@@ -57,22 +57,16 @@ export class DynamoFeedDAO extends DynamoPagedDAO implements FeedDAO {
       },
     }));
 
-    for (let start = 0; start < requests.length; start += BATCH_WRITE_LIMIT) {
-      let pending = requests.slice(start, start + BATCH_WRITE_LIMIT);
-      let attempt = 0;
-
-      while (pending.length > 0) {
+    await sendInChunksWithRetry(
+      requests,
+      BATCH_WRITE_LIMIT,
+      async (chunk): Promise<BatchWriteWriteRequest[]> => {
         const response = await dynamoClient.send(
-          new BatchWriteCommand({ RequestItems: { [TABLE_NAME]: pending } }),
+          new BatchWriteCommand({ RequestItems: { [TABLE_NAME]: chunk } }),
         );
-
-        pending = response.UnprocessedItems?.[TABLE_NAME] ?? [];
-        if (pending.length > 0) {
-          await sleep(50 * 2 ** attempt);
-          attempt++;
-        }
-      }
-    }
+        return response.UnprocessedItems?.[TABLE_NAME] ?? [];
+      },
+    );
   }
 
   public async getPageOfFeed(
