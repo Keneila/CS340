@@ -345,3 +345,15 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Fix clicking a user in the Followers/Followees lists doing nothing: the link path had no leading "/", so it resolved relative to the current page and the extracted alias matched no user. The link is now the absolute path "/<featurePath>/<alias>".
 - Review: Works just fine.
+
+## 2026-11-24: tweeter-web/test/model/net/ServerFacade.test.ts, tweeter-web/test/model/service/StatusService.test.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Update the model integration tests to work against the DynamoDB-backed server instead of FakeData: log in as the seeded @allen for a real auth token, register a new unique user, and check paging, ordering, and counts against what the server returns rather than FakeData lists.
+- Review: Don't all work yet, so I worked with the ai to fix them.
+
+## 2026-11-24: tweeter-web/test/model/service/StatusService.test.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Fix the failing "first page of a user's story" test: it required every status to have non-empty text, but @allen's story holds empty statuses posted before the PostStatus fix. It now only checks that each post is a string.
+- Review: It all looks good.
