@@ -1,12 +1,12 @@
 // AI-assisted: see AI-ATTRIBUTION.md
 import { IsFollowerRequest, IsFollowerResponse } from "tweeter-shared";
 import { UserService } from "../../model/service/UserService";
-import { FakeDAOFactory } from "../../model/dao/fake/FakeDAOFactory";
+import { getDAOFactory } from "../DAOFactoryProvider";
 
 export const handler = async (
   request: IsFollowerRequest,
 ): Promise<IsFollowerResponse> => {
-  const userService = new UserService(new FakeDAOFactory());
+  const userService = new UserService(getDAOFactory());
   const isFollower = await userService.getIsFollowerStatus(
     request.token,
     request.userAlias,

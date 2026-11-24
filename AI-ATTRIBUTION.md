@@ -177,3 +177,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Add bcryptjs password hashing: register rejects taken aliases, hashes the password, uploads the image, and saves the user with UserDAO.putUser; login verifies the password against UserDAO.getPasswordHash with bcrypt.compare.
 - Review: Waiting till Dynamobb is up before fully testing, but looks simple and fine.
+
+## 2026-11-24: tweeter-server/src/lambda/DAOFactoryProvider.ts (new file), tweeter-server/src/lambda/follow/GetFolloweesLambda.ts, tweeter-server/src/lambda/follow/GetFollowersLambda.ts, tweeter-server/src/lambda/status/GetFeedItemsLambda.ts, tweeter-server/src/lambda/status/GetStoryItemsLambda.ts, tweeter-server/src/lambda/status/PostStatusLambda.ts, tweeter-server/src/lambda/user/FollowLambda.ts, tweeter-server/src/lambda/user/GetFolloweeCountLambda.ts, tweeter-server/src/lambda/user/GetFollowerCountLambda.ts, tweeter-server/src/lambda/user/GetIsFollowerLambda.ts, tweeter-server/src/lambda/user/GetUserLambda.ts, tweeter-server/src/lambda/user/LoginLambda.ts, tweeter-server/src/lambda/user/LogoutLambda.ts, tweeter-server/src/lambda/user/RegisterLambda.ts, tweeter-server/src/lambda/user/UnfollowLambda.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Add a DAOFactoryProvider with getDAOFactory(), the single place that chooses the DAOFactory (currently FakeDAOFactory), and have every lambda get its factory from it instead of creating FakeDAOFactory directly.
+- Review: Looks good. The code doesn't change too much in each file.

@@ -1,12 +1,12 @@
 // AI-assisted: see AI-ATTRIBUTION.md
 import { GetUserRequest, GetUserResponse } from "tweeter-shared";
 import { UserService } from "../../model/service/UserService";
-import { FakeDAOFactory } from "../../model/dao/fake/FakeDAOFactory";
+import { getDAOFactory } from "../DAOFactoryProvider";
 
 export const handler = async (
   request: GetUserRequest,
 ): Promise<GetUserResponse> => {
-  const userService = new UserService(new FakeDAOFactory());
+  const userService = new UserService(getDAOFactory());
   const user = await userService.getUser(request.token, request.alias);
   return {
     success: true,

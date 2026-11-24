@@ -1,12 +1,12 @@
 // AI-assisted: see AI-ATTRIBUTION.md
 import { GetCountRequest, GetCountResponse } from "tweeter-shared";
 import { UserService } from "../../model/service/UserService";
-import { FakeDAOFactory } from "../../model/dao/fake/FakeDAOFactory";
+import { getDAOFactory } from "../DAOFactoryProvider";
 
 export const handler = async (
   request: GetCountRequest,
 ): Promise<GetCountResponse> => {
-  const userService = new UserService(new FakeDAOFactory());
+  const userService = new UserService(getDAOFactory());
   const count = await userService.getFolloweeCount(
     request.token,
     request.userAlias,
