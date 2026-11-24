@@ -6,7 +6,7 @@ import {
 import { StatusDto, UserDto } from "tweeter-shared";
 import { FeedDAO } from "../FeedDAO";
 import { UserDAO } from "../UserDAO";
-import { dynamoClient } from "./DynamoClient";
+import { dynamoClient, sleep } from "./DynamoClient";
 import { DynamoPagedDAO } from "./DynamoPagedDAO";
 
 // Table and attribute names; these must match the feed table in template.yaml.
@@ -22,9 +22,6 @@ const TIMESTAMP = "timestamp";
 
 // DynamoDB allows at most 25 items in one BatchWrite request.
 const BATCH_WRITE_LIMIT = 25;
-
-const sleep = (ms: number): Promise<void> =>
-  new Promise((resolve) => setTimeout(resolve, ms));
 
 const toTimeAuthor = (timestamp: number, authorAlias: string): string =>
   `${timestamp}#${authorAlias}`;

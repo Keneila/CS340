@@ -19,3 +19,8 @@ export const dynamoClient: DynamoDBDocumentClient = DynamoDBDocumentClient.from(
     },
   },
 );
+
+// Waits ms milliseconds. Used to back off before retrying the items or keys
+// a batch request left unprocessed.
+export const sleep = (ms: number): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, ms));

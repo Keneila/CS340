@@ -273,3 +273,21 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Write DynamoFeedDAO, the DynamoDB implementation of FeedDAO against the feed table: write a status to many receivers' feeds with BatchWrite (25 per request, retrying unprocessed items), and return pages of a feed newest first via DynamoPagedDAO, filling in authors with one UserDAO.getUsers call per page.
 - Review: Nothing crazy to note.
+
+## 2026-11-24: tweeter-server/src/model/dao/dynamodb/DynamoClient.ts, tweeter-server/src/model/dao/dynamodb/DynamoUserDAO.ts, tweeter-server/src/model/dao/dynamodb/DynamoFeedDAO.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Remove the duplicated sleep helper from DynamoUserDAO and DynamoFeedDAO by moving it into DynamoClient as a shared export that both import.
+- Review: It's fine.
+
+## 2026-11-24: tweeter-server/src/model/dao/dynamodb/DynamoDAOFactory.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Swap DynamoStoryDAO and DynamoFeedDAO into DynamoDAOFactory in place of the fake story and feed DAOs, passing each the factory's user DAO.
+- Review: Really simple.
+
+## 2026-11-24: tweeter-server/src/model/dao/dynamodb/DynamoDAOFactory.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Swap DynamoFollowDAO into DynamoDAOFactory in place of the fake follow DAO, remove the now-unused fake import, and clean up the leftover TODO and "TEMPORARY" comments.
+- Review: Really simple.

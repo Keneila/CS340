@@ -7,7 +7,7 @@ import {
 } from "@aws-sdk/lib-dynamodb";
 import { UserDto } from "tweeter-shared";
 import { UserDAO } from "../UserDAO";
-import { dynamoClient } from "./DynamoClient";
+import { dynamoClient, sleep } from "./DynamoClient";
 
 // Table and attribute names; these must match the user table in template.yaml.
 const TABLE_NAME = "user";
@@ -27,9 +27,6 @@ const BATCH_GET_LIMIT = 100;
 // here, so it is never returned along with a user.
 const USER_PROJECTION = `#alias, ${FIRST_NAME}, ${LAST_NAME}, ${IMAGE_URL}`;
 const USER_PROJECTION_NAMES = { "#alias": ALIAS };
-
-const sleep = (ms: number): Promise<void> =>
-  new Promise((resolve) => setTimeout(resolve, ms));
 
 export class DynamoUserDAO implements UserDAO {
   public async putUser(user: UserDto, passwordHash: string): Promise<void> {
