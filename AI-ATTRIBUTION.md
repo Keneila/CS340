@@ -243,3 +243,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Write DynamoAuthTokenDAO, the DynamoDB implementation of AuthTokenDAO against the authtoken table: put a token with alias/last_used/expires_at, get it with a consistent read, refresh last_used and expires_at only if the token still exists, and delete it.
 - Review: Looks ok.
+
+## 2026-11-24: tweeter-server/src/model/dao/dynamodb/DynamoFollowDAO.ts (new file)
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Write DynamoFollowDAO, the DynamoDB implementation of FollowDAO against the follow table: put/delete/check a follow, page followees by querying the table and followers by querying follow_index, with a shared paging helper that fetches one extra item for an exact hasMore.
+- Review: Looks right. Nothing notable for me to change.
