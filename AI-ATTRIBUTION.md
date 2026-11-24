@@ -153,3 +153,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Make auth token timestamps use epoch seconds everywhere: rename the timeout constant to AUTH_TOKEN_TIMEOUT_SECONDS, and have UserService.startSession store the new token's timestamp in seconds instead of milliseconds.
 - Review: The code is fine.
+
+## 2026-11-24: tweeter-server/src/model/service/UserService.ts, tweeter-server/src/model/service/FollowService.ts, tweeter-server/src/model/service/StatusService.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Wire AuthorizationService into the three services: each creates one from its DAOFactory and calls authenticate(token) at the start of every method except login, register, and logout. UserService's private getFollowCounts now reads counts from the DAO directly so follow/unfollow authenticate only once.
+- Review: I think this works fine.

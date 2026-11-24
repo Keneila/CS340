@@ -3,16 +3,19 @@ import { UserDto } from "tweeter-shared";
 import { DAOFactory } from "../dao/DAOFactory";
 import { FollowDAO } from "../dao/FollowDAO";
 import { UserDAO } from "../dao/UserDAO";
+import { AuthorizationService } from "./AuthorizationService";
 import { Service } from "./Service";
 
 export class FollowService extends Service {
   private readonly followDAO: FollowDAO;
   private readonly userDAO: UserDAO;
+  private readonly authorizationService: AuthorizationService;
 
   public constructor(daoFactory: DAOFactory) {
     super(daoFactory);
     this.followDAO = daoFactory.getFollowDAO();
     this.userDAO = daoFactory.getUserDAO();
+    this.authorizationService = new AuthorizationService(daoFactory);
   }
 
   public async loadMoreFollowees(
@@ -21,6 +24,7 @@ export class FollowService extends Service {
     pageSize: number,
     lastFollowee: UserDto | null,
   ): Promise<[UserDto[], boolean]> {
+    await this.authorizationService.authenticate(token);
     return this.toUserPage(
       this.followDAO.getPageOfFolloweeAliases(
         userAlias,
@@ -36,6 +40,7 @@ export class FollowService extends Service {
     pageSize: number,
     lastFollower: UserDto | null,
   ): Promise<[UserDto[], boolean]> {
+    await this.authorizationService.authenticate(token);
     return this.toUserPage(
       this.followDAO.getPageOfFollowerAliases(
         userAlias,

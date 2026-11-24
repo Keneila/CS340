@@ -5,6 +5,7 @@ import { DAOFactory } from "../dao/DAOFactory";
 import { FollowDAO } from "../dao/FollowDAO";
 import { ImageDAO } from "../dao/ImageDAO";
 import { UserDAO } from "../dao/UserDAO";
+import { AuthorizationService } from "./AuthorizationService";
 import { Service } from "./Service";
 
 export class UserService extends Service {
@@ -12,6 +13,7 @@ export class UserService extends Service {
   private readonly authTokenDAO: AuthTokenDAO;
   private readonly followDAO: FollowDAO;
   private readonly imageDAO: ImageDAO;
+  private readonly authorizationService: AuthorizationService;
 
   public constructor(daoFactory: DAOFactory) {
     super(daoFactory);
@@ -19,12 +21,14 @@ export class UserService extends Service {
     this.authTokenDAO = daoFactory.getAuthTokenDAO();
     this.followDAO = daoFactory.getFollowDAO();
     this.imageDAO = daoFactory.getImageDAO();
+    this.authorizationService = new AuthorizationService(daoFactory);
   }
 
   public async getUser(
     token: string,
     alias: string,
   ): Promise<UserDto | null> {
+    await this.authorizationService.authenticate(token);
     return this.userDAO.getUser(alias);
   }
 
@@ -77,6 +81,7 @@ export class UserService extends Service {
     userAlias: string,
     selectedUserAlias: string,
   ): Promise<boolean> {
+    await this.authorizationService.authenticate(token);
     return this.followDAO.isFollower(userAlias, selectedUserAlias);
   }
 
@@ -84,6 +89,7 @@ export class UserService extends Service {
     token: string,
     userAlias: string,
   ): Promise<number> {
+    await this.authorizationService.authenticate(token);
     return this.userDAO.getFolloweeCount(userAlias);
   }
 
@@ -91,6 +97,7 @@ export class UserService extends Service {
     token: string,
     userAlias: string,
   ): Promise<number> {
+    await this.authorizationService.authenticate(token);
     return this.userDAO.getFollowerCount(userAlias);
   }
 
@@ -98,28 +105,30 @@ export class UserService extends Service {
     token: string,
     userToUnfollowAlias: string,
   ): Promise<[followerCount: number, followeeCount: number]> {
-    // TODO: Get the current user's alias from the token, then
+    // TODO: Use the alias authenticate returns (the current user) to
     // followDAO.deleteFollow and decrement both users' counts
+    await this.authorizationService.authenticate(token);
 
-    return this.getFollowCounts(token, userToUnfollowAlias);
+    return this.getFollowCounts(userToUnfollowAlias);
   }
 
   public async follow(
     token: string,
     userToFollowAlias: string,
   ): Promise<[followerCount: number, followeeCount: number]> {
-    // TODO: Get the current user's alias from the token, then
+    // TODO: Use the alias authenticate returns (the current user) to
     // followDAO.putFollow and increment both users' counts
+    await this.authorizationService.authenticate(token);
 
-    return this.getFollowCounts(token, userToFollowAlias);
+    return this.getFollowCounts(userToFollowAlias);
   }
 
+  // Reads the counts straight from the DAO; callers have already authenticated.
   private async getFollowCounts(
-    token: string,
     userAlias: string,
   ): Promise<[followerCount: number, followeeCount: number]> {
-    const followerCount = await this.getFollowerCount(token, userAlias);
-    const followeeCount = await this.getFolloweeCount(token, userAlias);
+    const followerCount = await this.userDAO.getFollowerCount(userAlias);
+    const followeeCount = await this.userDAO.getFolloweeCount(userAlias);
 
     return [followerCount, followeeCount];
   }
