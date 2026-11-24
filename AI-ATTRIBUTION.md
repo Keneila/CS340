@@ -189,3 +189,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Make FakeUserDAO.getPasswordHash return a bcrypt hash of a fixed test password ("password") for any FakeData user, so login works with the fake DAOs.
 - Review: Just code for the temporary DAOs.
+
+## 2026-11-24: tweeter-server/src/model/dao/dynamodb/DynamoClient.ts (new file), tweeter-server/src/model/dao/dynamodb/DynamoDAOFactory.ts (new file)
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Create DynamoClient (one shared DynamoDB document client for all DynamoDB DAOs) and DynamoDAOFactory, which implements DAOFactory and for now returns the fake DAOs for each DAO not yet written so they can be switched over one at a time.
+- Review: Looks good.
