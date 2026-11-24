@@ -140,4 +140,10 @@
 
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Fix blank server error messages: ClientCommunicator now reads error.error, matching the { "error": "..." } body that template.yaml's error response templates return, instead of the missing errorMessage field.
-- Review: TODO
+- Review: one line changed, nothing wrong with it.
+
+## 2026-11-24: tweeter-server/src/model/service/AuthorizationService.ts (new file)
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Create AuthorizationService, which validates an auth token through AuthTokenDAO (exists, not expired after inactivity), refreshes its last-used time, and returns the owner's alias, throwing "[unauthorized]" errors otherwise. Not yet used by any other file.
+- Review: Changed the AI's use of Date.now to what was recommended in class: Math.floor(Date.now() / 1000)
