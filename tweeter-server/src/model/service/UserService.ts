@@ -1,4 +1,5 @@
 // AI-assisted: see AI-ATTRIBUTION.md
+import bcrypt from "bcryptjs";
 import { AuthToken, UserDto } from "tweeter-shared";
 import { AuthTokenDAO } from "../dao/AuthTokenDAO";
 import { DAOFactory } from "../dao/DAOFactory";
@@ -7,6 +8,9 @@ import { ImageDAO } from "../dao/ImageDAO";
 import { UserDAO } from "../dao/UserDAO";
 import { AuthorizationService } from "./AuthorizationService";
 import { Service } from "./Service";
+
+// bcrypt work factor: each +1 doubles hashing time. 10 is the common default.
+const BCRYPT_SALT_ROUNDS = 10;
 
 export class UserService extends Service {
   private readonly userDAO: UserDAO;
@@ -33,9 +37,16 @@ export class UserService extends Service {
     alias: string,
     password: string,
   ): Promise<[UserDto, string]> {
-    // TODO: Compare password to userDAO.getPasswordHash(alias) with bcryptjs
+    const passwordHash = await this.userDAO.getPasswordHash(alias);
     const user = await this.userDAO.getUser(alias);
-    if (user === null) {
+
+    // Same message for an unknown alias and a wrong password, so the error
+    // does not reveal which aliases exist.
+    if (
+      passwordHash === null ||
+      user === null ||
+      !(await bcrypt.compare(password, passwordHash))
+    ) {
       throw new Error("[bad-request] Invalid alias or password");
     }
 
@@ -50,13 +61,17 @@ export class UserService extends Service {
     userImageBytes: string,
     imageFileExtension: string,
   ): Promise<[UserDto, string]> {
-    // TODO: Reject the alias if it is already taken
+    if ((await this.userDAO.getUser(alias)) !== null) {
+      throw new Error(`[bad-request] Alias ${alias} is already taken`);
+    }
+
+    const passwordHash = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
     const imageUrl = await this.imageDAO.putImage(
       `${alias}.${imageFileExtension}`,
       userImageBytes,
     );
     const user: UserDto = { firstName, lastName, alias, imageUrl };
-    // TODO: Hash the password with bcryptjs, then save with userDAO.putUser(user, passwordHash)
+    await this.userDAO.putUser(user, passwordHash);
 
     return [user, await this.startSession(alias)];
   }

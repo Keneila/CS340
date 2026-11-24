@@ -170,4 +170,10 @@
 
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Write the postStatus fan-out: after saving the status to the author's story, page through the author's followers with FollowDAO (25 per page) and add the status to each page of followers' feeds with FeedDAO.putFeedItems.
-- Review: TODO
+- Review: Haven't tested this yet. But the logic doesn't look excessive.
+
+## 2026-11-24: tweeter-server/src/model/service/UserService.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Add bcryptjs password hashing: register rejects taken aliases, hashes the password, uploads the image, and saves the user with UserDAO.putUser; login verifies the password against UserDAO.getPasswordHash with bcrypt.compare.
+- Review: Waiting till Dynamobb is up before fully testing, but looks simple and fine.
