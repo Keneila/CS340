@@ -291,3 +291,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Swap DynamoFollowDAO into DynamoDAOFactory in place of the fake follow DAO, remove the now-unused fake import, and clean up the leftover TODO and "TEMPORARY" comments.
 - Review: Really simple.
+
+## 2026-11-24: tweeter-server/src/model/service/StatusService.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Add the postStatus ownership check: throw "[unauthorized]" if the status's author alias differs from the alias the auth token belongs to, before saving the status or fanning it out.
+- Review: Looks fine.

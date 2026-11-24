@@ -45,9 +45,13 @@ export class StatusService extends Service {
   }
 
   public async postStatus(token: string, newStatus: StatusDto): Promise<void> {
-    // TODO: Once real auth tokens exist, throw "[unauthorized]" if the alias
-    // authenticate returns differs from newStatus.user.alias
-    await this.authorizationService.authenticate(token);
+    // Users may only post as themselves: the status's author must be the
+    // user the token belongs to.
+    const currentAlias = await this.authorizationService.authenticate(token);
+    if (newStatus.user.alias !== currentAlias) {
+      throw new Error("[unauthorized] You can only post statuses as yourself");
+    }
+
     await this.storyDAO.putStatus(newStatus);
     await this.addToFollowerFeeds(newStatus);
   }
