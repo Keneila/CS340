@@ -7,12 +7,12 @@ import { ImageDAO } from "../ImageDAO";
 import { StoryDAO } from "../StoryDAO";
 import { UserDAO } from "../UserDAO";
 import {
-  FakeAuthTokenDAO,
   FakeFeedDAO,
   FakeFollowDAO,
   FakeStoryDAO,
 } from "../fake/FakeDAOFactory";
 import { S3ImageDAO } from "../s3/S3ImageDAO";
+import { DynamoAuthTokenDAO } from "./DynamoAuthTokenDAO";
 import { DynamoUserDAO } from "./DynamoUserDAO";
 
 // Creates the DynamoDB (and S3) DAOs. Each DAO is created once and reused,
@@ -22,12 +22,12 @@ import { DynamoUserDAO } from "./DynamoUserDAO";
 // DAO instead, so the DAOs can be switched over one at a time. Replace each
 // Fake* with the real class as it is written, then remove the fake import.
 export class DynamoDAOFactory implements DAOFactory {
-  private readonly userDAO: UserDAO = new DynamoUserDAO(); // TODO: DynamoUserDAO
-  private readonly authTokenDAO: AuthTokenDAO = new FakeAuthTokenDAO(); // TODO: DynamoAuthTokenDAO
+  private readonly userDAO: UserDAO = new DynamoUserDAO();
+  private readonly authTokenDAO: AuthTokenDAO = new DynamoAuthTokenDAO(); // TODO: DynamoAuthTokenDAO
   private readonly followDAO: FollowDAO = new FakeFollowDAO(); // TODO: DynamoFollowDAO
   private readonly storyDAO: StoryDAO = new FakeStoryDAO(); // TODO: DynamoStoryDAO
   private readonly feedDAO: FeedDAO = new FakeFeedDAO(); // TODO: DynamoFeedDAO
-  private readonly imageDAO: ImageDAO = new S3ImageDAO(); // TODO: S3ImageDAO
+  private readonly imageDAO: ImageDAO = new S3ImageDAO(); //
 
   public getUserDAO(): UserDAO {
     return this.userDAO;

@@ -237,3 +237,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Write S3ImageDAO, the S3 implementation of ImageDAO: uploads the base64 profile image to the cs-340-krh-images bucket under image/ as a public-read object with a Content-Type from its extension, and returns its public URL. Not yet swapped into DynamoDAOFactory.
 - Review: Reviewed the changes from the milestone 4a specs with the AI. Also swapped it in for DynamoDAOfactory.
+
+## 2026-11-24: tweeter-server/src/model/dao/dynamodb/DynamoAuthTokenDAO.ts (new file)
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Write DynamoAuthTokenDAO, the DynamoDB implementation of AuthTokenDAO against the authtoken table: put a token with alias/last_used/expires_at, get it with a consistent read, refresh last_used and expires_at only if the token still exists, and delete it.
+- Review: Looks ok.
