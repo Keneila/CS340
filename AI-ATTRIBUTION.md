@@ -321,3 +321,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Delete the temporary FakeDAOFactory file (and its now-empty fake/ folder), since DynamoDAOFactory now uses only real DynamoDB and S3 DAOs and nothing imports it.
 - Review: Nothing to check.
+
+## 2026-11-24: tweeter-server/src/scripts/SeedData.ts (new file)
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Create a script that populates the DynamoDB tables with test data through the real DAOs: the 22 FakeData users (password "password"), follows so @allen has 21 followers and followees, and statuses with mentions and URLs in stories and feeds, retrying throttled writes and refusing to run twice.
+- Review: It works. Nothing to note.
