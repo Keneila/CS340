@@ -61,12 +61,13 @@ export class UserService extends Service {
   }
 
   // Creates and stores a new auth token for alias and returns the token string.
+  // The stored timestamp is in epoch seconds, matching AuthorizationService.
   private async startSession(alias: string): Promise<string> {
     const authToken = AuthToken.Generate();
     await this.authTokenDAO.putAuthToken(
       authToken.token,
       alias,
-      authToken.timestamp,
+      Math.floor(authToken.timestamp / 1000),
     );
     return authToken.token;
   }

@@ -147,3 +147,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Create AuthorizationService, which validates an auth token through AuthTokenDAO (exists, not expired after inactivity), refreshes its last-used time, and returns the owner's alias, throwing "[unauthorized]" errors otherwise. Not yet used by any other file.
 - Review: Changed the AI's use of Date.now to what was recommended in class: Math.floor(Date.now() / 1000)
+
+## 2026-11-24: tweeter-server/src/model/service/AuthorizationService.ts, tweeter-server/src/model/service/UserService.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Make auth token timestamps use epoch seconds everywhere: rename the timeout constant to AUTH_TOKEN_TIMEOUT_SECONDS, and have UserService.startSession store the new token's timestamp in seconds instead of milliseconds.
+- Review: The code is fine.
