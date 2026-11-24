@@ -1,3 +1,4 @@
+// AI-assisted: see AI-ATTRIBUTION.md
 import { Link } from "react-router-dom";
 import { User } from "tweeter-shared";
 import { userUserNavigation } from "../UserNavigationHook";
@@ -29,7 +30,7 @@ const UserItem = (props: Props) => {
               </b>{" "}
               -{" "}
               <Link
-                to={`${props.featurePath}/${props.user.alias}`}
+                to={`/${props.featurePath}/${props.user.alias}`}
                 onClick={navigateToUser}
               >
                 {props.user.alias}

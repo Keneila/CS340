@@ -333,3 +333,15 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Fix new statuses being posted with empty text: PostStatus.tsx gave the once-created presenter a listener whose post was frozen at the first render (""), so the listener now reads post through a ref via a getter. Also make StatusService.postStatus reject empty or whitespace-only posts with a "[bad-request]" error.
 - Review: Changes look good and the error is fixed, so it works.
+
+## 2026-11-24: tweeter-web/src/components/statusItem/Post.tsx
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Fix @mentions not opening the mentioned user: the mention link used a relative path ("feed/@amy"), so its href became "/feed/@allen/feed/@amy" and the extracted alias matched no user. Mentions now link to the absolute path "/story/<alias>", opening that user's story.
+- Review: Works just fine.
+
+## 2026-11-24: tweeter-web/src/components/userItem/UserItem.tsx
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Fix clicking a user in the Followers/Followees lists doing nothing: the link path had no leading "/", so it resolved relative to the current page and the extracted alias matched no user. The link is now the absolute path "/<featurePath>/<alias>".
+- Review: Works just fine.

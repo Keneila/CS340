@@ -1,3 +1,4 @@
+// AI-assisted: see AI-ATTRIBUTION.md
 import { Link } from "react-router-dom";
 import { Status, Type } from "tweeter-shared";
 import { userUserNavigation } from "../UserNavigationHook";
@@ -14,9 +15,11 @@ const Post = (props: Props) => {
     <>
       {props.status.segments.map((segment, index) =>
         segment.type === Type.alias ? (
+          // A mention always opens that user's story. The path must start
+          // with "/" so it isn't resolved relative to the current page.
           <Link
             key={index}
-            to={`${props.featurePath}/${segment.text}`}
+            to={`/story/${segment.text}`}
             onClick={navigateToUser}
           >
             {segment.text}
