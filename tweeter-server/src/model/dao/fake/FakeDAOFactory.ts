@@ -1,6 +1,7 @@
 // AI-assisted: see AI-ATTRIBUTION.md
 // TEMPORARY: DAOs backed by FakeData so the server keeps running until the
 // DynamoDB/S3 DAOs exist. Delete this file once DynamoDAOFactory replaces it.
+import bcrypt from "bcryptjs";
 import { FakeData, Status, StatusDto, UserDto } from "tweeter-shared";
 import { AuthTokenDAO, AuthTokenRecord } from "../AuthTokenDAO";
 import { DAOFactory } from "../DAOFactory";
@@ -21,7 +22,12 @@ const getFakeStatusPage = (
   return [statuses.map((status) => status.dto), hasMore];
 };
 
+// Log in as any FakeData user (e.g. @allen) with this password.
+export const FAKE_PASSWORD = "password";
+
 export class FakeUserDAO implements UserDAO {
+  private static fakePasswordHash: Promise<string> | null = null;
+
   public async putUser(user: UserDto, passwordHash: string): Promise<void> {}
 
   public async getUser(alias: string): Promise<UserDto | null> {
@@ -40,8 +46,14 @@ export class FakeUserDAO implements UserDAO {
     return users;
   }
 
+  // Every FakeData user has the password FAKE_PASSWORD. The hash is computed
+  // once, on first use, and shared by all fake users.
   public async getPasswordHash(alias: string): Promise<string | null> {
-    return null;
+    if (FakeData.instance.findUserByAlias(alias) === null) {
+      return null;
+    }
+    FakeUserDAO.fakePasswordHash ??= bcrypt.hash(FAKE_PASSWORD, 10);
+    return FakeUserDAO.fakePasswordHash;
   }
 
   public async getFollowerCount(alias: string): Promise<number> {

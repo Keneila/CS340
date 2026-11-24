@@ -183,3 +183,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Add a DAOFactoryProvider with getDAOFactory(), the single place that chooses the DAOFactory (currently FakeDAOFactory), and have every lambda get its factory from it instead of creating FakeDAOFactory directly.
 - Review: Looks good. The code doesn't change too much in each file.
+
+## 2026-11-24: tweeter-server/src/model/dao/fake/FakeDAOFactory.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Make FakeUserDAO.getPasswordHash return a bcrypt hash of a fixed test password ("password") for any FakeData user, so login works with the fake DAOs.
+- Review: Just code for the temporary DAOs.
