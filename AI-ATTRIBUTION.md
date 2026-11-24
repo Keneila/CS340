@@ -123,3 +123,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Add a commented description for each API method in template.yaml (one per lambda), describing what the endpoint does and its request/response fields.
 - Review: Looks good.
+
+## 2026-11-24: tweeter-server/src/model/dao/DAOFactory.ts, tweeter-server/src/model/dao/UserDAO.ts (new file), tweeter-server/src/model/dao/AuthTokenDAO.ts (new file), tweeter-server/src/model/dao/FollowDAO.ts (new file), tweeter-server/src/model/dao/StoryDAO.ts (new file), tweeter-server/src/model/dao/FeedDAO.ts (new file), tweeter-server/src/model/dao/ImageDAO.ts (new file)
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Milestone 4A: create the database-agnostic DAO interfaces (User, AuthToken, Follow, Story, Feed, Image) and the DAOFactory abstract factory interface that returns them.
+- Review: The interfaces look reasonable.
