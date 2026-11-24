@@ -1,12 +1,8 @@
 // AI-assisted: see AI-ATTRIBUTION.md
-import {
-  DeleteCommand,
-  GetCommand,
-  PutCommand,
-  QueryCommand,
-} from "@aws-sdk/lib-dynamodb";
+import { DeleteCommand, GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
 import { FollowDAO } from "../FollowDAO";
 import { dynamoClient } from "./DynamoClient";
+import { DynamoPagedDAO } from "./DynamoPagedDAO";
 
 // Table, index, and attribute names; these must match the follow table in
 // template.yaml.
@@ -16,7 +12,7 @@ const INDEX_NAME = "follow_index";
 const FOLLOWER_ALIAS = "follower_alias";
 const FOLLOWEE_ALIAS = "followee_alias";
 
-export class DynamoFollowDAO implements FollowDAO {
+export class DynamoFollowDAO extends DynamoPagedDAO implements FollowDAO {
   public async putFollow(
     followerAlias: string,
     followeeAlias: string,
@@ -86,8 +82,9 @@ export class DynamoFollowDAO implements FollowDAO {
   }
 
   // Returns one page of the sortKey aliases under partitionValue, starting
-  // after lastAlias. Asks for one extra item so hasMore is exact: it is true
-  // only if at least one more alias exists after this page.
+  // after lastAlias. Both key attributes of the table and the index are the
+  // same two aliases, so { partitionKey, sortKey } is a complete start key
+  // for either.
   private async getPageOfAliases(
     partitionKey: string,
     partitionValue: string,
@@ -96,26 +93,20 @@ export class DynamoFollowDAO implements FollowDAO {
     lastAlias: string | null,
     indexName?: string,
   ): Promise<[aliases: string[], hasMore: boolean]> {
-    const response = await dynamoClient.send(
-      new QueryCommand({
-        TableName: TABLE_NAME,
-        IndexName: indexName,
-        KeyConditionExpression: "#partitionKey = :partitionValue",
-        ExpressionAttributeNames: { "#partitionKey": partitionKey },
-        ExpressionAttributeValues: { ":partitionValue": partitionValue },
-        Limit: pageSize + 1,
-        ExclusiveStartKey:
+    return this.getPage(
+      {
+        tableName: TABLE_NAME,
+        indexName,
+        partitionKey,
+        partitionValue,
+        pageSize,
+        lastKey:
           lastAlias === null
-            ? undefined
+            ? null
             : { [partitionKey]: partitionValue, [sortKey]: lastAlias },
-      }),
+      },
+      (item) => item[sortKey] as string,
     );
-
-    const items = response.Items ?? [];
-    const aliases = items
-      .slice(0, pageSize)
-      .map((item) => item[sortKey] as string);
-    return [aliases, items.length > pageSize];
   }
 
   private toKey(

@@ -255,3 +255,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Create DynamoPagedDAO, an abstract base class with a generic getPage<T> that runs a DynamoDB query for one partition (table or index, ascending or descending, starting after a given key) and returns a page of mapped results with an exact hasMore, for the follow, story, and feed DAOs to share.
 - Review: This code actually looks really helpful and clearcut.
+
+## 2026-11-24: tweeter-server/src/model/dao/dynamodb/DynamoFollowDAO.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Make DynamoFollowDAO extend DynamoPagedDAO: its private getPageOfAliases now builds a PageQuery and calls the shared getPage instead of running its own QueryCommand and hasMore logic.
+- Review: Looks like good code.
