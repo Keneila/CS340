@@ -249,3 +249,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Write DynamoFollowDAO, the DynamoDB implementation of FollowDAO against the follow table: put/delete/check a follow, page followees by querying the table and followers by querying follow_index, with a shared paging helper that fetches one extra item for an exact hasMore.
 - Review: Looks right. Nothing notable for me to change.
+
+## 2026-11-24: tweeter-server/src/model/dao/dynamodb/DynamoPagedDAO.ts (new file)
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Create DynamoPagedDAO, an abstract base class with a generic getPage<T> that runs a DynamoDB query for one partition (table or index, ascending or descending, starting after a given key) and returns a page of mapped results with an exact hasMore, for the follow, story, and feed DAOs to share.
+- Review: This code actually looks really helpful and clearcut.
