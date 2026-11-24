@@ -165,3 +165,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Write the real follow and unfollow logic in UserService: use the alias from AuthorizationService as the current user, reject following yourself or a nonexistent user, add/remove the follow through FollowDAO only when it changes, and update both users' counts through UserDAO.
 - Review: The logic makes sense.
+
+## 2026-11-24: tweeter-server/src/model/service/StatusService.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Write the postStatus fan-out: after saving the status to the author's story, page through the author's followers with FollowDAO (25 per page) and add the status to each page of followers' feeds with FeedDAO.putFeedItems.
+- Review: TODO
