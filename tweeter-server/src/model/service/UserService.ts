@@ -24,10 +24,7 @@ export class UserService extends Service {
     this.authorizationService = new AuthorizationService(daoFactory);
   }
 
-  public async getUser(
-    token: string,
-    alias: string,
-  ): Promise<UserDto | null> {
+  public async getUser(token: string, alias: string): Promise<UserDto | null> {
     await this.authorizationService.authenticate(token);
     return this.userDAO.getUser(alias);
   }
@@ -101,26 +98,72 @@ export class UserService extends Service {
     return this.userDAO.getFollowerCount(userAlias);
   }
 
+  // Makes the current user stop following userToUnfollowAlias and returns
+  // that user's updated counts. Does nothing if not already following.
   public async unfollow(
     token: string,
     userToUnfollowAlias: string,
   ): Promise<[followerCount: number, followeeCount: number]> {
-    // TODO: Use the alias authenticate returns (the current user) to
-    // followDAO.deleteFollow and decrement both users' counts
-    await this.authorizationService.authenticate(token);
+    const currentAlias = await this.authenticateFollowChange(
+      token,
+      userToUnfollowAlias,
+    );
+
+    if (await this.followDAO.isFollower(currentAlias, userToUnfollowAlias)) {
+      await this.followDAO.deleteFollow(currentAlias, userToUnfollowAlias);
+      await this.changeFollowCounts(currentAlias, userToUnfollowAlias, -1);
+    }
 
     return this.getFollowCounts(userToUnfollowAlias);
   }
 
+  // Makes the current user follow userToFollowAlias and returns that user's
+  // updated counts. Does nothing if already following.
   public async follow(
     token: string,
     userToFollowAlias: string,
   ): Promise<[followerCount: number, followeeCount: number]> {
-    // TODO: Use the alias authenticate returns (the current user) to
-    // followDAO.putFollow and increment both users' counts
-    await this.authorizationService.authenticate(token);
+    const currentAlias = await this.authenticateFollowChange(
+      token,
+      userToFollowAlias,
+    );
+
+    if (!(await this.followDAO.isFollower(currentAlias, userToFollowAlias))) {
+      await this.followDAO.putFollow(currentAlias, userToFollowAlias);
+      await this.changeFollowCounts(currentAlias, userToFollowAlias, 1);
+    }
 
     return this.getFollowCounts(userToFollowAlias);
+  }
+
+  // Authenticates the token and checks that the other user exists and is not
+  // the current user. Returns the current user's alias.
+  private async authenticateFollowChange(
+    token: string,
+    otherAlias: string,
+  ): Promise<string> {
+    const currentAlias = await this.authorizationService.authenticate(token);
+
+    if (currentAlias === otherAlias) {
+      throw new Error("[bad-request] You cannot follow or unfollow yourself");
+    }
+    if ((await this.userDAO.getUser(otherAlias)) === null) {
+      throw new Error(`[bad-request] User ${otherAlias} does not exist`);
+    }
+
+    return currentAlias;
+  }
+
+  // Adds delta to the follower's followee count and the followee's follower count.
+  private async changeFollowCounts(
+    followerAlias: string,
+    followeeAlias: string,
+    delta: number,
+  ): Promise<void> {
+    await Promise.all([
+      this.userDAO.changeFolloweeCount(followerAlias, delta),
+      this.userDAO.changeFollowerCount(followeeAlias, delta),
+    ]);
   }
 
   // Reads the counts straight from the DAO; callers have already authenticated.

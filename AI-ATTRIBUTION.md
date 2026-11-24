@@ -159,3 +159,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Wire AuthorizationService into the three services: each creates one from its DAOFactory and calls authenticate(token) at the start of every method except login, register, and logout. UserService's private getFollowCounts now reads counts from the DAO directly so follow/unfollow authenticate only once.
 - Review: I think this works fine.
+
+## 2026-11-24: tweeter-server/src/model/service/UserService.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Write the real follow and unfollow logic in UserService: use the alias from AuthorizationService as the current user, reject following yourself or a nonexistent user, add/remove the follow through FollowDAO only when it changes, and update both users' counts through UserDAO.
+- Review: The logic makes sense.
