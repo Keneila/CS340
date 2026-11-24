@@ -15,6 +15,10 @@ import { Service } from "./Service";
 // bcrypt work factor: each +1 doubles hashing time. 10 is the common default.
 const BCRYPT_SALT_ROUNDS = 10;
 
+// "@" then one or more letters or digits. Posts link a mention to a user only
+// when it is "@" plus the alias, so other characters would break mentions.
+const VALID_ALIAS = /^@[a-zA-Z0-9]+$/;
+
 export class UserService extends Service {
   private readonly userDAO: UserDAO;
   private readonly authTokenDAO: AuthTokenDAO;
@@ -37,9 +41,10 @@ export class UserService extends Service {
   }
 
   public async login(
-    alias: string,
+    typedAlias: string,
     password: string,
   ): Promise<[UserDto, string]> {
+    const alias = this.toAlias(typedAlias);
     const passwordHash = await this.userDAO.getPasswordHash(alias);
     const user = await this.userDAO.getUser(alias);
 
@@ -59,11 +64,17 @@ export class UserService extends Service {
   public async register(
     firstName: string,
     lastName: string,
-    alias: string,
+    typedAlias: string,
     password: string,
     userImageBytes: string,
     imageFileExtension: string,
   ): Promise<[UserDto, string]> {
+    const alias = this.toAlias(typedAlias);
+    if (!VALID_ALIAS.test(alias)) {
+      throw new Error(
+        "[bad-request] Alias must be @ followed by only letters and numbers",
+      );
+    }
     if ((await this.userDAO.getUser(alias)) !== null) {
       throw new Error(`[bad-request] Alias ${alias} is already taken`);
     }
@@ -77,6 +88,13 @@ export class UserService extends Service {
     await this.userDAO.putUser(user, passwordHash);
 
     return [user, await this.startSession(alias)];
+  }
+
+  // Turns what the user typed into a stored alias: trims spaces and adds the
+  // leading "@" if missing, so "bob" and "@bob" are the same user.
+  private toAlias(typedAlias: string): string {
+    const alias = typedAlias.trim();
+    return alias.startsWith("@") ? alias : `@${alias}`;
   }
 
   // Creates and stores a new auth token for alias and returns the token string.

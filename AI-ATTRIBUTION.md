@@ -303,3 +303,21 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Add a withErrorHandling wrapper that re-throws any error without a bad-request/unauthorized/internal-server-error tag as "[internal-server-error] <message>" (logging it), so API Gateway returns a real error instead of a 200. Applied to the four paged lambdas through createPagedItemHandler and to the other ten lambdas directly.
 - Review: I'm not sure if this needed within the specs, but it seems useful and looks fine.
+
+## 2026-11-24: tweeter-server/src/model/service/UserService.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Fix aliases typed without "@": login and register now trim the typed alias and add a leading "@" if missing, and register rejects aliases that aren't "@" followed by only letters and numbers, so mentions can link to every user.
+- Review: Looks fine.
+
+## 2026-11-24: tweeter-shared/src/model/domain/Status.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Fix parseMentions, which discarded the result of replaceAll so mentions kept trailing punctuation (e.g. "@bob,"): each mention is now "@" plus the letters and digits right after it, and a lone "@" is no longer treated as a mention.
+- Review: Looks fine.
+
+## 2026-11-24: tweeter-server/src/model/dao/fake/FakeDAOFactory.ts (deleted)
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Delete the temporary FakeDAOFactory file (and its now-empty fake/ folder), since DynamoDAOFactory now uses only real DynamoDB and S3 DAOs and nothing imports it.
+- Review: Nothing to check.

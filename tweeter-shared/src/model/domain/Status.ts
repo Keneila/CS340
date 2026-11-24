@@ -29,8 +29,8 @@ export class Status {
             post.substring(startIndex, reference.startPostion),
             startIndex,
             reference.startPostion - 1,
-            Type.text
-          )
+            Type.text,
+          ),
         );
       }
 
@@ -45,8 +45,8 @@ export class Status {
           post.substring(startIndex),
           startIndex,
           post.length,
-          Type.text
-        )
+          Type.text,
+        ),
       );
     }
 
@@ -80,7 +80,7 @@ export class Status {
       if (startIndex > -1) {
         // Push the url
         references.push(
-          new PostSegment(url, startIndex, startIndex + url.length, Type.url)
+          new PostSegment(url, startIndex, startIndex + url.length, Type.url),
         );
 
         // Move start and previous start past the url
@@ -156,8 +156,8 @@ export class Status {
             mention,
             startIndex,
             startIndex + mention.length,
-            Type.alias
-          )
+            Type.alias,
+          ),
         );
 
         // Move start and previous start past the mention
@@ -173,11 +173,12 @@ export class Status {
     const mentions: string[] = [];
 
     for (let word of post.split(/(\s+)/)) {
-      if (word.startsWith("@")) {
-        // Remove all non-alphanumeric characters
-        word.replaceAll(/[^a-zA-Z0-9]/g, "");
-
-        mentions.push(word);
+      // A mention is "@" plus the letters and digits right after it, so
+      // trailing punctuation ("@bob," or "@bob's") is not part of the alias.
+      // A lone "@" is not a mention.
+      const mention = word.match(/^@[a-zA-Z0-9]+/);
+      if (mention) {
+        mentions.push(mention[0]);
       }
     }
 
@@ -193,7 +194,7 @@ export class Status {
     while ((match = regex.exec(post)) !== null) {
       const matchIndex = match.index;
       newlines.push(
-        new PostSegment("\n", matchIndex, matchIndex + 1, Type.newline)
+        new PostSegment("\n", matchIndex, matchIndex + 1, Type.newline),
       );
     }
 
@@ -264,9 +265,9 @@ export class Status {
           jsonObject._user._firstName,
           jsonObject._user._lastName,
           jsonObject._user._alias,
-          jsonObject._user._imageUrl
+          jsonObject._user._imageUrl,
         ),
-        jsonObject._timestamp
+        jsonObject._timestamp,
       );
     } else {
       return null;
@@ -294,9 +295,9 @@ export class Status {
             dto.user.firstName,
             dto.user.lastName,
             dto.user.alias,
-            dto.user.imageUrl
+            dto.user.imageUrl,
           ),
-          dto.timestamp
+          dto.timestamp,
         );
   }
 }
