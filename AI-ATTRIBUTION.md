@@ -135,3 +135,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Milestone 4A: wire the DAOFactory through the Service base class and every lambda, moving FakeData behind temporary fake DAOs (FakeDAOFactory) so the services use only DAO interfaces and the server still runs.
 - Review: TODO
+
+## 2026-11-24: tweeter-web/src/model/net/ClientCommunicator.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Fix blank server error messages: ClientCommunicator now reads error.error, matching the { "error": "..." } body that template.yaml's error response templates return, instead of the missing errorMessage field.
+- Review: TODO
