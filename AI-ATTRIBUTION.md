@@ -267,3 +267,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Write DynamoStoryDAO, the DynamoDB implementation of StoryDAO against the story table: save a status (author alias, timestamp, post) and return pages of a user's story newest first via DynamoPagedDAO, filling in the author through a UserDAO passed to its constructor.
 - Review: Nothing to note. Looks fine.
+
+## 2026-11-24: tweeter-server/src/model/dao/dynamodb/DynamoFeedDAO.ts (new file)
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Write DynamoFeedDAO, the DynamoDB implementation of FeedDAO against the feed table: write a status to many receivers' feeds with BatchWrite (25 per request, retrying unprocessed items), and return pages of a feed newest first via DynamoPagedDAO, filling in authors with one UserDAO.getUsers call per page.
+- Review: Nothing crazy to note.
