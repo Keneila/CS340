@@ -1,16 +1,27 @@
 // AI-assisted: see AI-ATTRIBUTION.md
-import { FakeData, Status, StatusDto } from "tweeter-shared";
+import { StatusDto } from "tweeter-shared";
+import { DAOFactory } from "../dao/DAOFactory";
+import { FeedDAO } from "../dao/FeedDAO";
+import { StoryDAO } from "../dao/StoryDAO";
 import { Service } from "./Service";
 
 export class StatusService extends Service {
+  private readonly storyDAO: StoryDAO;
+  private readonly feedDAO: FeedDAO;
+
+  public constructor(daoFactory: DAOFactory) {
+    super(daoFactory);
+    this.storyDAO = daoFactory.getStoryDAO();
+    this.feedDAO = daoFactory.getFeedDAO();
+  }
+
   public async loadMoreFeedItems(
     token: string,
     userAlias: string,
     pageSize: number,
     lastItem: StatusDto | null,
   ): Promise<[StatusDto[], boolean]> {
-    // TODO: Replace with the result of calling the database
-    return this.getFakeData(lastItem, pageSize);
+    return this.feedDAO.getPageOfFeed(userAlias, pageSize, lastItem);
   }
 
   public async loadMoreStoryItems(
@@ -19,20 +30,11 @@ export class StatusService extends Service {
     pageSize: number,
     lastItem: StatusDto | null,
   ): Promise<[StatusDto[], boolean]> {
-    // TODO: Replace with the result of calling the database
-    return this.getFakeData(lastItem, pageSize);
+    return this.storyDAO.getPageOfStory(userAlias, pageSize, lastItem);
   }
 
   public async postStatus(token: string, newStatus: StatusDto): Promise<void> {
-    // TODO: Save the status to the database
-  }
-
-  private async getFakeData(
-    lastItem: StatusDto | null,
-    pageSize: number,
-  ): Promise<[StatusDto[], boolean]> {
-    return this.toDtoPage(
-      FakeData.instance.getPageOfStatuses(Status.fromDto(lastItem), pageSize),
-    );
+    await this.storyDAO.putStatus(newStatus);
+    // TODO: Add the status to every follower's feed (FollowDAO follower pages + FeedDAO.putFeedItems)
   }
 }

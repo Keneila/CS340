@@ -1,11 +1,8 @@
 // AI-assisted: see AI-ATTRIBUTION.md
+import { DAOFactory } from "../dao/DAOFactory";
+
+// Base class for all services. Services get their DAOs from the factory
+// passed in, so they never call `new` on a DAO or know which database is used.
 export abstract class Service {
-  // Converts a page of domain objects (User, Status, ...) into a page of
-  // their DTOs, keeping the hasMore flag.
-  protected toDtoPage<D>(
-    page: [items: { readonly dto: D }[], hasMore: boolean],
-  ): [D[], boolean] {
-    const [items, hasMore] = page;
-    return [items.map((item) => item.dto), hasMore];
-  }
+  public constructor(protected readonly daoFactory: DAOFactory) {}
 }

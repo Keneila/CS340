@@ -129,3 +129,9 @@
 - Tool: Claude Code (Claude Opus 5.5)
 - Task: Milestone 4A: create the database-agnostic DAO interfaces (User, AuthToken, Follow, Story, Feed, Image) and the DAOFactory abstract factory interface that returns them.
 - Review: The interfaces look reasonable.
+
+## 2026-11-24: tweeter-server/src/model/dao/fake/FakeDAOFactory.ts (new file), tweeter-server/src/model/service/Service.ts, tweeter-server/src/model/service/UserService.ts, tweeter-server/src/model/service/FollowService.ts, tweeter-server/src/model/service/StatusService.ts, tweeter-server/src/lambda/follow/GetFolloweesLambda.ts, tweeter-server/src/lambda/follow/GetFollowersLambda.ts, tweeter-server/src/lambda/status/GetFeedItemsLambda.ts, tweeter-server/src/lambda/status/GetStoryItemsLambda.ts, tweeter-server/src/lambda/status/PostStatusLambda.ts, tweeter-server/src/lambda/user/FollowLambda.ts, tweeter-server/src/lambda/user/GetFolloweeCountLambda.ts, tweeter-server/src/lambda/user/GetFollowerCountLambda.ts, tweeter-server/src/lambda/user/GetIsFollowerLambda.ts, tweeter-server/src/lambda/user/GetUserLambda.ts, tweeter-server/src/lambda/user/LoginLambda.ts, tweeter-server/src/lambda/user/LogoutLambda.ts, tweeter-server/src/lambda/user/RegisterLambda.ts, tweeter-server/src/lambda/user/UnfollowLambda.ts
+
+- Tool: Claude Code (Claude Opus 5.5)
+- Task: Milestone 4A: wire the DAOFactory through the Service base class and every lambda, moving FakeData behind temporary fake DAOs (FakeDAOFactory) so the services use only DAO interfaces and the server still runs.
+- Review: TODO
